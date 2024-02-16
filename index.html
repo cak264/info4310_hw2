@@ -4,6 +4,39 @@
         <script src="https://d3js.org/d3.v7.min.js"></script>
     </head>
     <body>
-        <img src="titanic.jpg" alt="Titanic sinking ship" height="500">
+        <!-- <img src="titanic.jpg" alt="Titanic sinking ship" height="500"> -->
+        <svg id="mainsvg" height="600" width="900"></svg>
     </body>
+    <script>
+         let requestData = async function(){
+            let passengers = await d3.csv("titanic-passenger-list.csv", d3.autoType);
+            passengers = passengers.filter(p=> p.age != null && p.raw_fare != null);
+            passengers = passengers.slice().sort((a,b) => d3.ascending(a.fare, b.fare));
+            console.log(passengers);
+
+            // group the passengers by class
+            let firstDict = {};
+            let secondDict = {};
+            let thirdDict = {};
+
+            passengers.forEach((passenger, i) => {
+                if (passenger.pclass == 1){
+                    firstDict[i]=passenger;
+                }
+                else if (passenger.pclass == 2){
+                    secondDict[i]=passenger;
+                }
+                else{
+                    thirdDict[i]=passenger;
+                };
+            })
+            console.log(firstDict);
+            console.log(secondDict);
+            console.log(thirdDict);
+
+            // make bins to hold passengers
+         };
+
+         requestData();
+    </script>
 </html>
