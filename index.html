@@ -1,13 +1,45 @@
 <html>
     <head>
-        <h3>Cameron Kull, cak264</h3>
+        <h3>Cameron Kull, cak264 & Marie Williams, mcw242</h3>
         <script src="https://d3js.org/d3.v7.min.js"></script>
+
+        <style>
+            /* note: adjust width here to change change dimensions */
+            .image {
+              display: block;
+              width: 150%;
+              height: auto;
+            }
+
+            .top {
+              position: absolute;
+              top: 0;
+              left: 0;
+            }
+
+            .container {
+              position: relative;
+              width: fit-content;
+            }
+        </style>
+
     </head>
     <body>
-        <!-- <img src="titanic.jpg" alt="Titanic sinking ship" height="500"> -->
-        <svg id="mainsvg" height="600" width="900"></svg>
+        <div class="container">
+            <img src="titanic.jpg" alt="Titanic sinking ship" height="500" class="image">
+            <svg id="mainsvg" height="600" width="900" class="top"></svg>
+        </div>
     </body>
     <script>
+        const boatsvg = d3.select("svg#mainsvg");
+        const width = boatsvg.attr('width');
+        const height = boatsvg.attr('height');
+        const margins = { "top": 10, "right": 10, "bottom": 40, "left": 40};
+        const chartWidth = width - margins.left - margins.right;
+        const chartHeight = height - margins.top - margins.bottom;
+        const boat = boatsvg.append("g");
+
+
          let requestData = async function(){
             let passengers = await d3.csv("titanic-passenger-list.csv", d3.autoType);
             passengers = passengers.filter(p=> p.age != null && p.raw_fare != null);
@@ -30,9 +62,28 @@
                     thirdDict[i]=passenger;
                 };
             })
-            console.log(firstDict);
-            console.log(secondDict);
-            console.log(thirdDict);
+            console.log(Object.keys(firstDict).length);
+            console.log(Object.keys(secondDict).length);
+            console.log(Object.keys(thirdDict).length);
+
+            // console.log(firstDict);
+            // console.log(secondDict);
+            // console.log(thirdDict);
+
+            boat.append("circle")
+                .attr("cx", 100)
+                .attr("cy", 100)
+                .attr("r", 10)
+                .style("fill", "black");
+
+
+            boat.append("circle")
+                .attr("cx", 0)
+                .attr("cy", 0)
+                .attr("r", 10)
+                .style("fill", "black");
+
+
 
             // make bins to hold passengers
          };
