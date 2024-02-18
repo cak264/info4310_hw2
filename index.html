@@ -7,7 +7,7 @@
             /* note: adjust width here to change change dimensions */
             .image {
               display: block;
-              width: 150%;
+              width: 152%;
               height: auto;
             }
 
@@ -89,42 +89,75 @@
             // console.log(thirdDict);
 
 
+            //first class points
+            let NumCols1 = 95;
+            let ColSize1 = 3;
+            let Width1 = 590;
+            let Height1 = 15;
+
+            const xScale1 = d3.scaleLinear().domain([0, NumCols1-1]).range([0, 18800]);
+            const yScale1 = d3.scaleLinear().domain([0, ColSize1-1]).range([Height1, 5]);
 
 
             var firstG = boat.append("g")
                 .attr("class", "firstClass")
-                .attr("transform", "translate(105,236) rotate(-7)");
+                .attr("transform", "translate(105,236) rotate(-7.2)");
 
             firstG.append("rect")
                 .attr("x", 0)
                 .attr("y", 0)
-                .attr("width", 590)
-                .attr("height", 15)
-                .attr("fill", "lightblue");
+                .attr("width", Width1)
+                .attr("height", Height1)
+                .attr("fill", "none");
+
+            firstG.selectAll("circle").data(firstList)
+                .join("circle")
+                .attr("class", "first")
+                .attr("cx", (d,i) => xScale1(i/NumCols1))
+                .attr("cy", (d,i) => yScale1(i%ColSize1))
+                .attr("r", 1.8)
+                .style("fill", "black");
 
 
+
+            //second class points
+            let NumCols2 = 87;
+            let ColSize2 = 3;
+            let Width2 = 808;
+            let Height2 = 23;
+
+            const xScale2 = d3.scaleLinear().domain([0, NumCols2-1]).range([0, 23300]);
+            const yScale2 = d3.scaleLinear().domain([0, ColSize2-1]).range([Height2+2, 10]);
 
             var secondG = boat.append("g")
                 .attr("class", "secondClass")
-                .attr("transform", "translate(6,266) rotate(-7)");
+                .attr("transform", "translate(6,266) rotate(-7.2)");
 
             secondG.append("rect")
                 .attr("x", 0)
                 .attr("y", 0)
-                .attr("width", 808)
-                .attr("height", 23)
-                .attr("fill", "lightblue");
+                .attr("width", Width2)
+                .attr("height", Height2)
+                .attr("fill", "none");
+
+            secondG.selectAll("circle").data(secondList)
+                .join("circle")
+                .attr("class", "second")
+                .attr("cx", (d,i) => xScale2(i/NumCols2))
+                .attr("cy", (d,i) => yScale2(i%ColSize2))
+                .attr("r", 2)
+                .style("fill", "black");
 
 
 
             //third class points
-            let NumCols3 = 50;
-            let ColSize3 = 10;
+            let NumCols3 = 63; //63, 8, 6050
+            let ColSize3 = 8; //50, 10, 3850
             let Width3 = 783;
             let Height3 = 61;
 
-            const xScale3 = d3.scaleLinear().domain([0, NumCols3-1]).range([0, 3850]);
-            const yScale3 = d3.scaleLinear().domain([0, ColSize3-1]).range([Height3, 5]);
+            const xScale3 = d3.scaleLinear().domain([0, NumCols3-1]).range([0, 6180]);
+            const yScale3 = d3.scaleLinear().domain([0, ColSize3-1]).range([Height3, 10]);
 
             var thirdG = boat.append("g")
                 .attr("class", "thirdClass")
@@ -144,6 +177,9 @@
                 .attr("cy", (d,i) => yScale3(i%ColSize3))
                 .attr("r", 2)
                 .style("fill", "black");
+
+            //slant left: .attr("cy", (d,i) => yScale3((i / NumCols3) - (i % ColSize3)))
+            //slant right: .attr("cy", (d,i) => yScale3(i%ColSize3))
 
             // make bins to hold passengers
          };
