@@ -7,7 +7,7 @@
             /* note: adjust width here to change change dimensions */
             .image {
               display: block;
-              width: 152%;
+              width: 100%;
               height: auto;
             }
 
@@ -19,13 +19,50 @@
 
             .container {
               position: relative;
-              width: fit-content;
+              width: 830px;
+              left: 150px;
+              top: 30px;
+            }
+
+            #labels {
+                float: left;
+            }
+
+            #first {
+                position: fixed;
+                top: 295px;
+                left: 50px;
+            }
+
+            #second {
+                position: fixed;
+                top: 330px;
+                left: 34px;
+            }
+
+            #third {
+                position: fixed;
+                top: 380px;
+                left: 43px;
+            }
+
+            h1 {
+                position: absolute;
+                z-index: 1;
+                top: -40px;
+                left: -125px;
             }
         </style>
 
     </head>
     <body>
+        <div id="labels">
+            <h4 id="first">First Class</h4>
+            <h4 id="second">Second Class</h4>
+            <h4 id="third">Third Class</h4>
+        </div>
         <div class="container">
+            <h1>A Look at Titanic Passengers</h1>
             <img src="titanic.jpg" alt="Titanic sinking ship" height="500" class="image">
             <svg id="mainsvg" height="600" width="900" class="top"></svg>
         </div>
@@ -95,7 +132,7 @@
             let Width1 = 590;
             let Height1 = 15;
 
-            const xScale1 = d3.scaleLinear().domain([0, NumCols1-1]).range([0, 18800]);
+            const xScale1 = d3.scaleLinear().domain([0, NumCols1-1]).range([5, 18700]);
             const yScale1 = d3.scaleLinear().domain([0, ColSize1-1]).range([Height1, 5]);
 
 
@@ -116,7 +153,22 @@
                 .attr("cx", (d,i) => xScale1(i/NumCols1))
                 .attr("cy", (d,i) => yScale1(i%ColSize1))
                 .attr("r", 1.8)
-                .style("fill", "black");
+                .style("fill", d => {return d.sex === "male" ? "lightblue" : "pink";});
+
+
+            var filteredList1 = firstList.map((item, index) => ({ item: item, originalIndex: index }))
+                                        .filter(({ item }) => item.survived === 0);
+
+            firstG.selectAll("text").data(filteredList1)
+                .join("text")
+                .attr("class", "firstX")
+                .attr("x", d => xScale1(d.originalIndex/NumCols1))
+                .attr("y", d => yScale1(d.originalIndex%ColSize1))
+                .attr("text-anchor", "middle")
+                .attr("dominant-baseline", "middle")
+                .text("x")
+                .attr("font-size", 10)
+                .attr("fill", "black");
 
 
 
@@ -146,7 +198,22 @@
                 .attr("cx", (d,i) => xScale2(i/NumCols2))
                 .attr("cy", (d,i) => yScale2(i%ColSize2))
                 .attr("r", 2)
-                .style("fill", "black");
+                .style("fill", d => {return d.sex === "male" ? "lightblue" : "pink";});
+
+
+            var filteredList2 = secondList.map((item, index) => ({ item: item, originalIndex: index }))
+                                        .filter(({ item }) => item.survived === 0);
+
+            secondG.selectAll("text").data(filteredList2)
+                .join("text")
+                .attr("class", "secondX")
+                .attr("x", d => xScale2(d.originalIndex/NumCols2))
+                .attr("y", d => yScale2(d.originalIndex%ColSize2))
+                .attr("text-anchor", "middle")
+                .attr("dominant-baseline", "middle")
+                .text("x")
+                .attr("font-size", 12)
+                .attr("fill", "black");
 
 
 
@@ -165,10 +232,11 @@
 
             thirdG.append("rect")
                 .attr("x", 0)
-                .attr("y", 0)
-                .attr("width", Width3)
-                .attr("height", Height3)
-                .attr("fill", "none");
+                .attr("y", 5)
+                .attr("width", Width3+8)
+                .attr("height", Height3-13)
+                .attr("transform", "rotate(1)")
+                .attr("fill", "white");
 
             thirdG.selectAll("circle").data(thirdList)
                 .join("circle")
@@ -176,10 +244,28 @@
                 .attr("cx", (d,i) => xScale3(i/NumCols3))
                 .attr("cy", (d,i) => yScale3(i%ColSize3))
                 .attr("r", 2)
-                .style("fill", "black");
+                .style("fill", d => {return d.sex === "male" ? "lightblue" : "pink";});
+
+
+            var filteredList3 = thirdList.map((item, index) => ({ item: item, originalIndex: index }))
+                                        .filter(({ item }) => item.survived === 0);
+
+            // console.log(filteredList3)
+
+            thirdG.selectAll("text").data(filteredList3)
+                .join("text")
+                .attr("class", "thirdX")
+                .attr("x", d => xScale3(d.originalIndex/NumCols3))
+                .attr("y", d => yScale3(d.originalIndex%ColSize3))
+                .attr("text-anchor", "middle")
+                .attr("dominant-baseline", "middle")
+                .text("x")
+                .attr("font-size", 12)
+                .attr("fill", "black");
 
             //slant left: .attr("cy", (d,i) => yScale3((i / NumCols3) - (i % ColSize3)))
             //slant right: .attr("cy", (d,i) => yScale3(i%ColSize3))
+
 
             // make bins to hold passengers
          };
