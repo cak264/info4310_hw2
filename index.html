@@ -29,19 +29,19 @@
             }
 
             #first {
-                position: fixed;
+                position: absolute;
                 top: 295px;
                 left: 50px;
             }
 
             #second {
-                position: fixed;
+                position: absolute;
                 top: 330px;
                 left: 34px;
             }
 
             #third {
-                position: fixed;
+                position: absolute;
                 top: 380px;
                 left: 43px;
             }
@@ -52,6 +52,27 @@
                 top: -40px;
                 left: -125px;
             }
+
+            .tabs {
+                position: relative;
+                width: 830px;
+                left: 150px;
+            }
+
+            button {
+                margin: 0px;
+                float: left;
+            }
+
+            .gridlines line {
+              stroke: #bbb;
+            }
+            
+            .gridlines .domain {
+              stroke: none;
+            }
+          
+
         </style>
 
     </head>
@@ -66,6 +87,13 @@
             <img src="titanic.jpg" alt="Titanic sinking ship" height="500" class="image">
             <svg id="mainsvg" height="600" width="900" class="top"></svg>
         </div>
+        <div class="tabs">
+            <button id="all-b" type="button">All Classes</button>
+            <button id="first-b" type="button">First Class</button>
+            <button id="second-b" type="button">Second Class</button>
+            <button id="third-b" type="button">Third Class</button>
+        </div>
+        <svg id="tabsvg" height="600" width="1000"></svg>
     </body>
     <script>
         const boatsvg = d3.select("svg#mainsvg");
@@ -268,6 +296,158 @@
 
 
             // make bins to hold passengers
+
+
+            // setting up tabs
+            let tabArea = d3.select("#tabsvg");
+            
+            let tabAll = tabArea.append("g")
+                                .attr("class", "all");
+
+            const agewidth=500;
+            const ageheight=400;
+            const agemargins={top: 20, right: 20, bottom: 20, left: 20};
+            const agechartWidth = agewidth - agemargins.left - agemargins.right;
+            const agechartHeight = ageheight - agemargins.top - agemargins.bottom;
+
+            let allChartArea=tabAll.append("g")
+                            .attr("class", "chartArea")
+                            .attr('transform', `translate(${agemargins.left}, ${agemargins.top})`);
+
+            // organizing data by age
+            let bin = d3.bin().value(d=> d.age)
+                              .thresholds([0,5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95]);
+
+            let allAlive = passengers.filter(p=> p.survived == 1);
+            let allDead = passengers.filter(p=> p.survived == 0);
+            
+            let allAliveBins = bin(allAlive);
+            let allDeadBins = bin(allDead);
+            console.log(allAliveBins);
+            console.log(allDeadBins);
+
+            // scales 
+
+            let agexScale = d3.scaleLinear().domain([0, 95]).range([0,agechartWidth]);
+            let ageyScale = d3.scaleLinear().domain([0, d3.max(allDeadBins, function(d){return d.length})]).range([agechartHeight, 0]);
+
+
+            let leftAxis = d3.axisLeft(ageyScale);
+            allChartArea.append('g')
+                .attr('transform',`translate(${agemargins.left-10},${agemargins.top})`)
+                .call(leftAxis);
+
+            let leftGridlines = d3.axisLeft(ageyScale)
+                                .tickSize(-agechartWidth-10)
+                                .tickFormat('');
+            allChartArea.append('g')
+                .attr('class', 'gridlines')
+                .attr('transform',`translate(${agemargins.left-10},${agemargins.top})`)
+                .call(leftGridlines);
+
+            let bottomAxis = d3.axisBottom(agexScale);
+            allChartArea.append('g')
+                .attr('transform',`translate(${agemargins.left},${agechartHeight+margins.top+10})`)
+                .call(bottomAxis);
+
+            let bottomGridlines = d3.axisBottom(agexScale)
+                    .tickSize(agechartHeight+10)
+                    .tickFormat('');
+            allChartArea.append('g')
+                .attr('class', 'gridlines')
+                .attr('transform',`translate(${agemargins.left},${agemargins.top})`)
+                .call(bottomGridlines);
+
+            let deadBars = allChartArea.append("g");
+            let aliveBars = allChartArea.append("g");
+
+            deadBars.selectAll("rect").data(allDeadBins)
+                        .join("rect")
+                        .attr("x", d=> agexScale(d.x0)+20)
+                        .attr("y", d=> ageyScale(d.length)+20)
+                        .attr("height", d=> agechartHeight-ageyScale(d.length))
+                        .attr("width", d=> (agexScale(d.x0 + 5)+20) - (agexScale(d.x0)+20))
+                        .attr("fill", "blue")
+                        .attr("stroke", "black");
+
+            aliveBars.selectAll("rect").data(allAliveBins)
+                        .join("rect")
+                        .attr("x", d=> agexScale(d.x0)+20)
+                        .attr("y", d=> ageyScale(d.length)+20)
+                        .attr("height", d=> agechartHeight-ageyScale(d.length))
+                        .attr("width", d=>(agexScale(d.x0 + 5)+20) - (agexScale(d.x0)+20))
+                        .attr("fill", "green")
+                        .attr("stroke", "black")
+                        .attr("opacity", 0.8);
+
+            // pie charts
+            let femalePassengers = passengers.filter(p=>p.sex=="female");
+            let malePassengers = passengers.filter(p=>p.sex=="male");
+            let pie = d3.pie().value(1).sort((a, b) => a.survived - b.survived);
+            const malePie = pie(malePassengers);
+            const femalePie = pie(femalePassengers);
+
+            let malePieArea = tabAll.append("g")
+                                    .attr("class", "male-pie")
+                                    .attr('transform', `translate(${700}, ${100})`);
+
+            malePieArea.selectAll('path').data(malePie)
+                .join('path')
+                .attr('d', d3.arc()
+                    .innerRadius(0)
+                    .outerRadius(75)
+                )
+                .attr('stroke', p=> {
+                                if(p.data.survived == 0){
+                                    return "blue";
+                                } else {
+                                    return "green";
+                                }})
+                .attr("stroke-width", 2)
+                .style("opacity", 0.7);
+
+            let femalePieArea = tabAll.append("g")
+                                    .attr("class", "female-pie")
+                                    .attr('transform', `translate(${700}, ${300})`);
+
+            femalePieArea.selectAll('path').data(femalePie)
+                .join('path')
+                .attr('d', d3.arc()
+                    .innerRadius(0)
+                    .outerRadius(75)
+                )
+                .attr('stroke', p=> {
+                                if(p.data.survived == 0){
+                                    return "blue";
+                                } else {
+                                    return "green";
+                                }})
+                .attr("stroke-width", 2)
+                .style("opacity", 0.7);
+
+            // interactivity
+
+            let allButton = d3.select("#all-b");
+            let firstButton = d3.select("#first-b");
+            let secondButton = d3.select("#second-b");
+            let thirdButton = d3.select("#third-b");
+
+            allButton.on("click", function(){
+                tabAll.attr("visibility", "visible");
+            })
+
+            firstButton.on("click", function(){
+                tabAll.attr("visibility", "hidden");
+            })
+
+            secondButton.on("click", function(){
+                tabAll.attr("visibility", "hidden");
+            })
+
+            thirdButton.on("click", function(){
+                tabAll.attr("visibility", "hidden");
+            })
+
          };
 
          requestData();
