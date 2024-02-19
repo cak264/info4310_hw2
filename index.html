@@ -358,10 +358,10 @@
                 .attr('transform',`translate(${agemargins.left},${agemargins.top})`)
                 .call(bottomGridlines);
 
-            let deadBars = allChartArea.append("g");
-            let aliveBars = allChartArea.append("g");
+            let allDeadBars = allChartArea.append("g").attr("id", "adb");
+            let allAliveBars = allChartArea.append("g").attr("id", "aab");
 
-            deadBars.selectAll("rect").data(allDeadBins)
+            allDeadBars.selectAll("rect").data(allDeadBins)
                         .join("rect")
                         .attr("x", d=> agexScale(d.x0)+20)
                         .attr("y", d=> ageyScale(d.length)+20)
@@ -370,7 +370,7 @@
                         .attr("fill", "blue")
                         .attr("stroke", "black");
 
-            aliveBars.selectAll("rect").data(allAliveBins)
+            allAliveBars.selectAll("rect").data(allAliveBins)
                         .join("rect")
                         .attr("x", d=> agexScale(d.x0)+20)
                         .attr("y", d=> ageyScale(d.length)+20)
@@ -424,6 +424,88 @@
                                 }})
                 .attr("stroke-width", 2)
                 .style("opacity", 0.7);
+            
+            // first class
+
+            let tabFirst = tabArea.append("g")
+                                .attr("class", "first");
+            
+            let firstChartArea=tabAll.append("g")
+                            .attr("class", "chartArea")
+                            .attr('transform', `translate(${agemargins.left}, ${agemargins.top})`);
+
+            let firstAlive = firstList.filter(p=> p.survived == 1);
+            let firstDead = firstList.filter(p=> p.survived == 0);
+            
+            let firstAliveBins = bin(firstAlive);
+            let firstDeadBins = bin(firstDead);
+
+            let firstDeadBars = firstChartArea.append("g").attr("visibility", "hidden");
+            let firstAliveBars = firstChartArea.append("g").attr("visibility", "hidden");
+
+            firstDeadBars.selectAll("rect").data(firstDeadBins)
+                        .join("rect")
+                        .attr("x", d=> agexScale(d.x0)+20)
+                        .attr("y", d=> ageyScale(d.length)+20)
+                        .attr("height", d=> agechartHeight-ageyScale(d.length))
+                        .attr("width", d=> (agexScale(d.x0 + 5)+20) - (agexScale(d.x0)+20))
+                        .attr("fill", "blue")
+                        .attr("stroke", "black");
+
+            firstAliveBars.selectAll("rect").data(firstAliveBins)
+                        .join("rect")
+                        .attr("x", d=> agexScale(d.x0)+20)
+                        .attr("y", d=> ageyScale(d.length)+20)
+                        .attr("height", d=> agechartHeight-ageyScale(d.length))
+                        .attr("width", d=>(agexScale(d.x0 + 5)+20) - (agexScale(d.x0)+20))
+                        .attr("fill", "green")
+                        .attr("stroke", "black")
+                        .attr("opacity", 0.8);
+
+            // // pie charts
+            // let femalePassengers = passengers.filter(p=>p.sex=="female");
+            // let malePassengers = passengers.filter(p=>p.sex=="male");
+            // let pie = d3.pie().value(1).sort((a, b) => a.survived - b.survived);
+            // const malePie = pie(malePassengers);
+            // const femalePie = pie(femalePassengers);
+
+            // let malePieArea = tabAll.append("g")
+            //                         .attr("class", "male-pie")
+            //                         .attr('transform', `translate(${700}, ${100})`);
+
+            // malePieArea.selectAll('path').data(malePie)
+            //     .join('path')
+            //     .attr('d', d3.arc()
+            //         .innerRadius(0)
+            //         .outerRadius(75)
+            //     )
+            //     .attr('stroke', p=> {
+            //                     if(p.data.survived == 0){
+            //                         return "blue";
+            //                     } else {
+            //                         return "green";
+            //                     }})
+            //     .attr("stroke-width", 2)
+            //     .style("opacity", 0.7);
+
+            // let femalePieArea = tabAll.append("g")
+            //                         .attr("class", "female-pie")
+            //                         .attr('transform', `translate(${700}, ${300})`);
+
+            // femalePieArea.selectAll('path').data(femalePie)
+            //     .join('path')
+            //     .attr('d', d3.arc()
+            //         .innerRadius(0)
+            //         .outerRadius(75)
+            //     )
+            //     .attr('stroke', p=> {
+            //                     if(p.data.survived == 0){
+            //                         return "blue";
+            //                     } else {
+            //                         return "green";
+            //                     }})
+            //     .attr("stroke-width", 2)
+            //     .style("opacity", 0.7);
 
             // interactivity
 
@@ -433,19 +515,59 @@
             let thirdButton = d3.select("#third-b");
 
             allButton.on("click", function(){
-                tabAll.attr("visibility", "visible");
+                // all
+                allAliveBars.attr("visibility", "visible");
+                allDeadBars.attr("visibility", "visible");
+                malePieArea.attr("visibility", "visible");
+                femalePieArea.attr("visibility", "visible");
+
+                // first
+                firstAliveBars.attr("visibility", "hidden");
+                firstDeadBars.attr("visibility", "hidden");
+                // malePieArea.attr("visibility", "hidden");
+                // femalePieArea.attr("visibility", "hidden");
             })
 
             firstButton.on("click", function(){
-                tabAll.attr("visibility", "hidden");
+                // all
+                allAliveBars.attr("visibility", "hidden");
+                allDeadBars.attr("visibility", "hidden");
+                malePieArea.attr("visibility", "hidden");
+                femalePieArea.attr("visibility", "hidden");
+
+                // first
+                firstAliveBars.attr("visibility", "visible");
+                firstDeadBars.attr("visibility", "visible");
+                // malePieArea.attr("visibility", "visible");
+                // femalePieArea.attr("visibility", "visible");
             })
 
             secondButton.on("click", function(){
-                tabAll.attr("visibility", "hidden");
+                // all
+                allAliveBars.attr("visibility", "hidden");
+                allDeadBars.attr("visibility", "hidden");
+                malePieArea.attr("visibility", "hidden");
+                femalePieArea.attr("visibility", "hidden");
+
+                // first
+                firstAliveBars.attr("visibility", "hidden");
+                firstDeadBars.attr("visibility", "hidden");
+                // malePieArea.attr("visibility", "hidden");
+                // femalePieArea.attr("visibility", "hidden");
             })
 
             thirdButton.on("click", function(){
-                tabAll.attr("visibility", "hidden");
+                // all
+                allAliveBars.attr("visibility", "hidden");
+                allDeadBars.attr("visibility", "hidden");
+                malePieArea.attr("visibility", "hidden");
+                femalePieArea.attr("visibility", "hidden");
+
+                // first
+                firstAliveBars.attr("visibility", "hidden");
+                firstDeadBars.attr("visibility", "hidden");
+                // malePieArea.attr("visibility", "hidden");
+                // femalePieArea.attr("visibility", "hidden");
             })
 
          };
