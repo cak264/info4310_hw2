@@ -304,15 +304,16 @@
             let tabAll = tabArea.append("g")
                                 .attr("class", "all");
 
-            const agewidth=500;
-            const ageheight=400;
-            const agemargins={top: 20, right: 20, bottom: 20, left: 20};
-            const agechartWidth = agewidth - agemargins.left - agemargins.right;
-            const agechartHeight = ageheight - agemargins.top - agemargins.bottom;
+            const tabWidth=500;
+            const tabHeight=400;
+            const tabMargins={top: 20, right: 20, bottom: 20, left: 30};
+            const tabChartWidth = tabWidth - tabMargins.left - tabMargins.right;
+            const tabChartHeight = tabHeight - tabMargins.top - tabMargins.bottom;
 
             let allChartArea=tabAll.append("g")
-                            .attr("class", "chartArea")
-                            .attr('transform', `translate(${agemargins.left}, ${agemargins.top})`);
+                            .attr("class", "allChartArea")
+                            .attr("transform", `translate(${tabMargins.left}, ${tabMargins.top})`);
+
 
             // organizing data by age
             let bin = d3.bin().value(d=> d.age)
@@ -323,73 +324,132 @@
             
             let allAliveBins = bin(allAlive);
             let allDeadBins = bin(allDead);
-            console.log(allAliveBins);
-            console.log(allDeadBins);
 
             // scales 
 
-            let agexScale = d3.scaleLinear().domain([0, 95]).range([0,agechartWidth]);
-            let ageyScale = d3.scaleLinear().domain([0, d3.max(allDeadBins, function(d){return d.length})]).range([agechartHeight, 0]);
+            let allXScale = d3.scaleLinear().domain([0, 85]).range([0,tabChartWidth]);
+            let aliveYScale = d3.scaleLinear().domain([0, d3.max(allDeadBins, function(d){return d.length})]).range([tabChartHeight/2, 0]);
+            let deadYScale = d3.scaleLinear().domain([0, d3.max(allDeadBins, function(d){return d.length})]).range([tabChartHeight/2, tabChartHeight]);
 
+            // axes
 
-            let leftAxis = d3.axisLeft(ageyScale);
+            let aliveLeftAxis = d3.axisLeft(aliveYScale);
             allChartArea.append('g')
-                .attr('transform',`translate(${agemargins.left-10},${agemargins.top})`)
-                .call(leftAxis);
+                .attr('transform',`translate(${tabMargins.left-10},${tabMargins.top})`)
+                .call(aliveLeftAxis);
 
-            let leftGridlines = d3.axisLeft(ageyScale)
-                                .tickSize(-agechartWidth-10)
+            let deadLeftAxis = d3.axisLeft(deadYScale);
+            allChartArea.append('g')
+                .attr('transform',`translate(${tabMargins.left-10},${tabMargins.top})`)
+                .call(deadLeftAxis);
+
+            let aliveLeftGridlines = d3.axisLeft(aliveYScale)
+                                .tickSize(-tabChartWidth-10)
                                 .tickFormat('');
             allChartArea.append('g')
                 .attr('class', 'gridlines')
-                .attr('transform',`translate(${agemargins.left-10},${agemargins.top})`)
-                .call(leftGridlines);
+                .attr('transform',`translate(${tabMargins.left-10},${tabMargins.top})`)
+                .call(aliveLeftGridlines);
 
-            let bottomAxis = d3.axisBottom(agexScale);
+            let deadLeftGridlines = d3.axisLeft(deadYScale)
+                                .tickSize(-tabChartWidth-10)
+                                .tickFormat('');
             allChartArea.append('g')
-                .attr('transform',`translate(${agemargins.left},${agechartHeight+margins.top+10})`)
+                .attr('class', 'gridlines')
+                .attr('transform',`translate(${tabMargins.left-10},${tabMargins.top})`)
+                .call(deadLeftGridlines);
+
+            let bottomAxis = d3.axisBottom(allXScale);
+            allChartArea.append('g')
+                .attr('transform',`translate(${tabMargins.left},${tabChartHeight+tabMargins.top+10})`)
                 .call(bottomAxis);
 
-            let bottomGridlines = d3.axisBottom(agexScale)
-                    .tickSize(agechartHeight+10)
+            let bottomGridlines = d3.axisBottom(allXScale)
+                    .tickSize(tabChartHeight+10)
                     .tickFormat('');
             allChartArea.append('g')
                 .attr('class', 'gridlines')
-                .attr('transform',`translate(${agemargins.left},${agemargins.top})`)
+                .attr('transform',`translate(${tabMargins.left},${tabMargins.top})`)
                 .call(bottomGridlines);
 
-            let allDeadBars = allChartArea.append("g").attr("id", "adb");
-            let allAliveBars = allChartArea.append("g").attr("id", "aab");
+            // axes labels
+            let title = tabAll.append("text")
+                              .attr("x", 240)
+                              .attr("y", 30)
+                              .text("All Passengers")
+                              .style("font-size", 20);
 
-            allDeadBars.selectAll("rect").data(allDeadBins)
-                        .join("rect")
-                        .attr("x", d=> agexScale(d.x0)+20)
-                        .attr("y", d=> ageyScale(d.length)+20)
-                        .attr("height", d=> agechartHeight-ageyScale(d.length))
-                        .attr("width", d=> (agexScale(d.x0 + 5)+20) - (agexScale(d.x0)+20))
-                        .attr("fill", "blue")
-                        .attr("stroke", "black");
+            let xAxisTitle = tabAll.append("text")
+                              .attr("x", 250)
+                              .attr("y", 450)
+                              .text("Passenger Age")
+                              .style("font-size", 15);
+
+            let yAlivetitle = tabAll.append("text")
+                              .attr("x", -100)
+                              .attr("y", 10)
+                              .text("Survived")
+                              .style('font-size', 15)
+                              .attr("text-anchor", "end")
+                              .attr("transform", "rotate(-90)")
+                              .style("alignment-baseline", "central");
+
+            let yDeadtitle = tabAll.append("text")
+                              .attr("x", -275)
+                              .attr("y", 10)
+                              .text("Deceased")
+                              .style('font-size', 15)
+                              .attr("text-anchor", "end")
+                              .attr("transform", "rotate(-90)")
+                              .style("alignment-baseline", "central");
+
+            let allDeadBars = allChartArea.append("g")
+                                          .attr("transform", `translate(${tabMargins.left}, ${tabMargins.top})`);
+            let allAliveBars = allChartArea.append("g")
+                                          .attr("transform", `translate(${tabMargins.left}, ${tabMargins.top})`);
 
             allAliveBars.selectAll("rect").data(allAliveBins)
                         .join("rect")
-                        .attr("x", d=> agexScale(d.x0)+20)
-                        .attr("y", d=> ageyScale(d.length)+20)
-                        .attr("height", d=> agechartHeight-ageyScale(d.length))
-                        .attr("width", d=>(agexScale(d.x0 + 5)+20) - (agexScale(d.x0)+20))
-                        .attr("fill", "green")
-                        .attr("stroke", "black")
-                        .attr("opacity", 0.8);
+                        .attr("x", d=> allXScale(d.x0))
+                        .attr("y", d=> aliveYScale(d.length))
+                        .attr("height", d=> tabChartHeight/2-aliveYScale(d.length))
+                        .attr("width", d=>(allXScale(d.x0 + 5)) - (allXScale(d.x0)))
+                        .attr("fill", "steelblue")
+                        .attr("stroke", "black");
+
+            allDeadBars.selectAll("rect").data(allDeadBins)
+                        .join("rect")
+                        .attr("x", d=> allXScale(d.x0))
+                        .attr("y", d=> tabChartHeight/2)
+                        .attr("height", d=> deadYScale(d.length)-tabChartHeight/2)
+                        .attr("width", d=> (allXScale(d.x0 + 5)) - (allXScale(d.x0)))
+                        .attr("fill", "grey")
+                        .attr("stroke", "black");
 
             // pie charts
             let femalePassengers = passengers.filter(p=>p.sex=="female");
             let malePassengers = passengers.filter(p=>p.sex=="male");
             let pie = d3.pie().value(1).sort((a, b) => a.survived - b.survived);
+
+            // labels
+
+            let malePieTitle = tabAll.append("text")
+                              .attr("x", 525)
+                              .attr("y", 50)
+                              .text("Male Passengers")
+                              .style("font-size", 15);
+            let femalePieTitle = tabAll.append("text")
+                              .attr("x", 525)
+                              .attr("y", 250)
+                              .text("Female Passengers")
+                              .style("font-size", 15);
+
             const malePie = pie(malePassengers);
             const femalePie = pie(femalePassengers);
 
             let malePieArea = tabAll.append("g")
                                     .attr("class", "male-pie")
-                                    .attr('transform', `translate(${700}, ${100})`);
+                                    .attr('transform', `translate(${700}, ${125})`);
 
             malePieArea.selectAll('path').data(malePie)
                 .join('path')
@@ -399,16 +459,15 @@
                 )
                 .attr('stroke', p=> {
                                 if(p.data.survived == 0){
-                                    return "blue";
+                                    return "grey";
                                 } else {
-                                    return "green";
+                                    return "steelblue";
                                 }})
-                .attr("stroke-width", 2)
-                .style("opacity", 0.7);
+                .attr("stroke-width", 2);
 
             let femalePieArea = tabAll.append("g")
                                     .attr("class", "female-pie")
-                                    .attr('transform', `translate(${700}, ${300})`);
+                                    .attr('transform', `translate(${700}, ${325})`);
 
             femalePieArea.selectAll('path').data(femalePie)
                 .join('path')
@@ -418,49 +477,48 @@
                 )
                 .attr('stroke', p=> {
                                 if(p.data.survived == 0){
-                                    return "blue";
+                                    return "grey";
                                 } else {
-                                    return "green";
+                                    return "steelblue";
                                 }})
-                .attr("stroke-width", 2)
-                .style("opacity", 0.7);
+                .attr("stroke-width", 2);
             
-            // first class
+            // // first class
 
-            let tabFirst = tabArea.append("g")
-                                .attr("class", "first");
+            // let tabFirst = tabArea.append("g")
+            //                     .attr("class", "first");
             
-            let firstChartArea=tabAll.append("g")
-                            .attr("class", "chartArea")
-                            .attr('transform', `translate(${agemargins.left}, ${agemargins.top})`);
+            // let firstChartArea=tabAll.append("g")
+            //                 .attr("class", "chartArea")
+            //                 .attr('transform', `translate(${agemargins.left}, ${agemargins.top})`);
 
-            let firstAlive = firstList.filter(p=> p.survived == 1);
-            let firstDead = firstList.filter(p=> p.survived == 0);
+            // let firstAlive = firstList.filter(p=> p.survived == 1);
+            // let firstDead = firstList.filter(p=> p.survived == 0);
             
-            let firstAliveBins = bin(firstAlive);
-            let firstDeadBins = bin(firstDead);
+            // let firstAliveBins = bin(firstAlive);
+            // let firstDeadBins = bin(firstDead);
 
-            let firstDeadBars = firstChartArea.append("g").attr("visibility", "hidden");
-            let firstAliveBars = firstChartArea.append("g").attr("visibility", "hidden");
+            // let firstDeadBars = firstChartArea.append("g").attr("visibility", "hidden");
+            // let firstAliveBars = firstChartArea.append("g").attr("visibility", "hidden");
 
-            firstDeadBars.selectAll("rect").data(firstDeadBins)
-                        .join("rect")
-                        .attr("x", d=> agexScale(d.x0)+20)
-                        .attr("y", d=> ageyScale(d.length)+20)
-                        .attr("height", d=> agechartHeight-ageyScale(d.length))
-                        .attr("width", d=> (agexScale(d.x0 + 5)+20) - (agexScale(d.x0)+20))
-                        .attr("fill", "blue")
-                        .attr("stroke", "black");
+            // firstDeadBars.selectAll("rect").data(firstDeadBins)
+            //             .join("rect")
+            //             .attr("x", d=> agexScale(d.x0)+20)
+            //             .attr("y", d=> ageyScale(d.length)+20)
+            //             .attr("height", d=> agechartHeight-ageyScale(d.length))
+            //             .attr("width", d=> (agexScale(d.x0 + 5)+20) - (agexScale(d.x0)+20))
+            //             .attr("fill", "blue")
+            //             .attr("stroke", "black");
 
-            firstAliveBars.selectAll("rect").data(firstAliveBins)
-                        .join("rect")
-                        .attr("x", d=> agexScale(d.x0)+20)
-                        .attr("y", d=> ageyScale(d.length)+20)
-                        .attr("height", d=> agechartHeight-ageyScale(d.length))
-                        .attr("width", d=>(agexScale(d.x0 + 5)+20) - (agexScale(d.x0)+20))
-                        .attr("fill", "green")
-                        .attr("stroke", "black")
-                        .attr("opacity", 0.8);
+            // firstAliveBars.selectAll("rect").data(firstAliveBins)
+            //             .join("rect")
+            //             .attr("x", d=> agexScale(d.x0)+20)
+            //             .attr("y", d=> ageyScale(d.length)+20)
+            //             .attr("height", d=> agechartHeight-ageyScale(d.length))
+            //             .attr("width", d=>(agexScale(d.x0 + 5)+20) - (agexScale(d.x0)+20))
+            //             .attr("fill", "green")
+            //             .attr("stroke", "black")
+            //             .attr("opacity", 0.8);
 
             // // pie charts
             // let femalePassengers = passengers.filter(p=>p.sex=="female");
@@ -522,8 +580,8 @@
                 femalePieArea.attr("visibility", "visible");
 
                 // first
-                firstAliveBars.attr("visibility", "hidden");
-                firstDeadBars.attr("visibility", "hidden");
+                // firstAliveBars.attr("visibility", "hidden");
+                // firstDeadBars.attr("visibility", "hidden");
                 // malePieArea.attr("visibility", "hidden");
                 // femalePieArea.attr("visibility", "hidden");
             })
@@ -536,8 +594,8 @@
                 femalePieArea.attr("visibility", "hidden");
 
                 // first
-                firstAliveBars.attr("visibility", "visible");
-                firstDeadBars.attr("visibility", "visible");
+                // firstAliveBars.attr("visibility", "visible");
+                // firstDeadBars.attr("visibility", "visible");
                 // malePieArea.attr("visibility", "visible");
                 // femalePieArea.attr("visibility", "visible");
             })
@@ -550,8 +608,8 @@
                 femalePieArea.attr("visibility", "hidden");
 
                 // first
-                firstAliveBars.attr("visibility", "hidden");
-                firstDeadBars.attr("visibility", "hidden");
+                // firstAliveBars.attr("visibility", "hidden");
+                // firstDeadBars.attr("visibility", "hidden");
                 // malePieArea.attr("visibility", "hidden");
                 // femalePieArea.attr("visibility", "hidden");
             })
@@ -564,8 +622,8 @@
                 femalePieArea.attr("visibility", "hidden");
 
                 // first
-                firstAliveBars.attr("visibility", "hidden");
-                firstDeadBars.attr("visibility", "hidden");
+                // firstAliveBars.attr("visibility", "hidden");
+                // firstDeadBars.attr("visibility", "hidden");
                 // malePieArea.attr("visibility", "hidden");
                 // femalePieArea.attr("visibility", "hidden");
             })
