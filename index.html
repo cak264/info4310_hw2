@@ -483,87 +483,86 @@
                                 }})
                 .attr("stroke-width", 2);
             
-            // // first class
+            // first class
 
-            // let tabFirst = tabArea.append("g")
-            //                     .attr("class", "first");
+            let tabFirst = tabArea.append("g")
+                                .attr("class", "first");
             
-            // let firstChartArea=tabAll.append("g")
-            //                 .attr("class", "chartArea")
-            //                 .attr('transform', `translate(${agemargins.left}, ${agemargins.top})`);
+            let firstChartArea=tabFirst.append("g")
+                            .attr("class", "chartArea")
+                            .attr('transform', `translate(${tabMargins.left}, ${tabMargins.top})`);
 
-            // let firstAlive = firstList.filter(p=> p.survived == 1);
-            // let firstDead = firstList.filter(p=> p.survived == 0);
+            let firstAlive = firstList.filter(p=> p.survived == 1);
+            let firstDead = firstList.filter(p=> p.survived == 0);
             
-            // let firstAliveBins = bin(firstAlive);
-            // let firstDeadBins = bin(firstDead);
+            let firstAliveBins = bin(firstAlive);
+            let firstDeadBins = bin(firstDead);
 
-            // let firstDeadBars = firstChartArea.append("g").attr("visibility", "hidden");
-            // let firstAliveBars = firstChartArea.append("g").attr("visibility", "hidden");
+            let firstDeadBars = firstChartArea.append("g").attr("visibility", "hidden")
+                                              .attr('transform', `translate(${tabMargins.left}, ${tabMargins.top})`);
+            let firstAliveBars = firstChartArea.append("g").attr("visibility", "hidden")
+                                                .attr('transform', `translate(${tabMargins.left}, ${tabMargins.top})`);
 
-            // firstDeadBars.selectAll("rect").data(firstDeadBins)
-            //             .join("rect")
-            //             .attr("x", d=> agexScale(d.x0)+20)
-            //             .attr("y", d=> ageyScale(d.length)+20)
-            //             .attr("height", d=> agechartHeight-ageyScale(d.length))
-            //             .attr("width", d=> (agexScale(d.x0 + 5)+20) - (agexScale(d.x0)+20))
-            //             .attr("fill", "blue")
-            //             .attr("stroke", "black");
+            firstAliveBars.selectAll("rect").data(firstAliveBins)
+                        .join("rect")
+                        .attr("x", d=> allXScale(d.x0))
+                        .attr("y", d=> aliveYScale(d.length))
+                        .attr("height", d=> tabChartHeight/2-aliveYScale(d.length))
+                        .attr("width", d=>(allXScale(d.x0 + 5)) - (allXScale(d.x0)))
+                        .attr("fill", "steelblue")
+                        .attr("stroke", "black");
 
-            // firstAliveBars.selectAll("rect").data(firstAliveBins)
-            //             .join("rect")
-            //             .attr("x", d=> agexScale(d.x0)+20)
-            //             .attr("y", d=> ageyScale(d.length)+20)
-            //             .attr("height", d=> agechartHeight-ageyScale(d.length))
-            //             .attr("width", d=>(agexScale(d.x0 + 5)+20) - (agexScale(d.x0)+20))
-            //             .attr("fill", "green")
-            //             .attr("stroke", "black")
-            //             .attr("opacity", 0.8);
-
+            firstDeadBars.selectAll("rect").data(firstDeadBins)
+                        .join("rect")
+                        .attr("x", d=> allXScale(d.x0))
+                        .attr("y", d=> tabChartHeight/2)
+                        .attr("height", d=> deadYScale(d.length)-tabChartHeight/2)
+                        .attr("width", d=> (allXScale(d.x0 + 5)) - (allXScale(d.x0)))
+                        .attr("fill", "grey")
+                        .attr("stroke", "black");
             // // pie charts
-            // let femalePassengers = passengers.filter(p=>p.sex=="female");
-            // let malePassengers = passengers.filter(p=>p.sex=="male");
-            // let pie = d3.pie().value(1).sort((a, b) => a.survived - b.survived);
-            // const malePie = pie(malePassengers);
-            // const femalePie = pie(femalePassengers);
+            let firstFemalePassengers = passengers.filter(p=>p.sex=="female" && p.pclass==1);
+            let firstMalePassengers = passengers.filter(p=>p.sex=="male" && p.pclass==1);
+            const firstMalePie = pie(firstMalePassengers);
+            const firstFemalePie = pie(firstFemalePassengers);
 
-            // let malePieArea = tabAll.append("g")
-            //                         .attr("class", "male-pie")
-            //                         .attr('transform', `translate(${700}, ${100})`);
+            let firstMalePieArea = tabAll.append("g")
+                                    .attr("class", "male-pie")
+                                    .attr('transform', `translate(${700}, ${125})`)
+                                    .attr("visibility", "hidden");
 
-            // malePieArea.selectAll('path').data(malePie)
-            //     .join('path')
-            //     .attr('d', d3.arc()
-            //         .innerRadius(0)
-            //         .outerRadius(75)
-            //     )
-            //     .attr('stroke', p=> {
-            //                     if(p.data.survived == 0){
-            //                         return "blue";
-            //                     } else {
-            //                         return "green";
-            //                     }})
-            //     .attr("stroke-width", 2)
-            //     .style("opacity", 0.7);
+            firstMalePieArea.selectAll('path').data(firstMalePie)
+                .join('path')
+                .attr('d', d3.arc()
+                    .innerRadius(0)
+                    .outerRadius(75)
+                )
+                .attr('stroke', p=> {
+                                if(p.data.survived == 0){
+                                    return "grey";
+                                } else {
+                                    return "steelblue";
+                                }})
+                .attr("stroke-width", 4);
 
-            // let femalePieArea = tabAll.append("g")
-            //                         .attr("class", "female-pie")
-            //                         .attr('transform', `translate(${700}, ${300})`);
+            let firstFemalePieArea = tabAll.append("g")
+                                    .attr("class", "female-pie")
+                                    .attr('transform', `translate(${700}, ${325})`)
+                                    .attr("visibility", "hidden");
 
-            // femalePieArea.selectAll('path').data(femalePie)
-            //     .join('path')
-            //     .attr('d', d3.arc()
-            //         .innerRadius(0)
-            //         .outerRadius(75)
-            //     )
-            //     .attr('stroke', p=> {
-            //                     if(p.data.survived == 0){
-            //                         return "blue";
-            //                     } else {
-            //                         return "green";
-            //                     }})
-            //     .attr("stroke-width", 2)
-            //     .style("opacity", 0.7);
+            firstFemalePieArea.selectAll('path').data(firstFemalePie)
+                .join('path')
+                .attr('d', d3.arc()
+                    .innerRadius(0)
+                    .outerRadius(75)
+                )
+                .attr('stroke', p=> {
+                                if(p.data.survived == 0){
+                                    return "grey";
+                                } else {
+                                    return "steelblue";
+                                }})
+                .attr("stroke-width", 4);
 
             // interactivity
 
@@ -574,16 +573,17 @@
 
             allButton.on("click", function(){
                 // all
+                title.text("All Passengers").attr("x", 240);
                 allAliveBars.attr("visibility", "visible");
                 allDeadBars.attr("visibility", "visible");
                 malePieArea.attr("visibility", "visible");
                 femalePieArea.attr("visibility", "visible");
 
                 // first
-                // firstAliveBars.attr("visibility", "hidden");
-                // firstDeadBars.attr("visibility", "hidden");
-                // malePieArea.attr("visibility", "hidden");
-                // femalePieArea.attr("visibility", "hidden");
+                firstAliveBars.attr("visibility", "hidden");
+                firstDeadBars.attr("visibility", "hidden");
+                firstMalePieArea.attr("visibility", "hidden");
+                firstFemalePieArea.attr("visibility", "hidden");
             })
 
             firstButton.on("click", function(){
@@ -594,18 +594,19 @@
                 femalePieArea.attr("visibility", "hidden");
 
                 // first
-                // firstAliveBars.attr("visibility", "visible");
-                // firstDeadBars.attr("visibility", "visible");
-                // malePieArea.attr("visibility", "visible");
-                // femalePieArea.attr("visibility", "visible");
+                title.text("First Class Passengers").attr("x", 220);
+                firstAliveBars.attr("visibility", "visible");
+                firstDeadBars.attr("visibility", "visible");
+                firstMalePieArea.attr("visibility", "visible");
+                firstFemalePieArea.attr("visibility", "visible");
             })
 
             secondButton.on("click", function(){
                 // all
                 allAliveBars.attr("visibility", "hidden");
                 allDeadBars.attr("visibility", "hidden");
-                malePieArea.attr("visibility", "hidden");
-                femalePieArea.attr("visibility", "hidden");
+                // malePieArea.attr("visibility", "hidden");
+                // femalePieArea.attr("visibility", "hidden");
 
                 // first
                 // firstAliveBars.attr("visibility", "hidden");
