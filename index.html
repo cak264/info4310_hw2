@@ -564,6 +564,89 @@
                                 }})
                 .attr("stroke-width", 4);
 
+
+             // first class
+
+            let tabSecond = tabArea.append("g")
+                    .attr("class", "second");
+            
+            let secondChartArea=tabFirst.append("g")
+                            .attr("class", "chartArea")
+                            .attr('transform', `translate(${tabMargins.left}, ${tabMargins.top})`);
+
+            let secondAlive = secondList.filter(p=> p.survived == 1);
+            let secondDead = secondList.filter(p=> p.survived == 0);
+            
+            let secondAliveBins = bin(secondAlive);
+            let secondDeadBins = bin(secondDead);
+
+            let secondDeadBars = secondChartArea.append("g").attr("visibility", "hidden")
+                                              .attr('transform', `translate(${tabMargins.left}, ${tabMargins.top})`);
+            let secondAliveBars = secondChartArea.append("g").attr("visibility", "hidden")
+                                                .attr('transform', `translate(${tabMargins.left}, ${tabMargins.top})`);
+
+            secondAliveBars.selectAll("rect").data(secondAliveBins)
+                        .join("rect")
+                        .attr("x", d=> allXScale(d.x0))
+                        .attr("y", d=> aliveYScale(d.length))
+                        .attr("height", d=> tabChartHeight/2-aliveYScale(d.length))
+                        .attr("width", d=>(allXScale(d.x0 + 5)) - (allXScale(d.x0)))
+                        .attr("fill", "steelblue")
+                        .attr("stroke", "black");
+
+            secondDeadBars.selectAll("rect").data(secondDeadBins)
+                        .join("rect")
+                        .attr("x", d=> allXScale(d.x0))
+                        .attr("y", d=> tabChartHeight/2)
+                        .attr("height", d=> deadYScale(d.length)-tabChartHeight/2)
+                        .attr("width", d=> (allXScale(d.x0 + 5)) - (allXScale(d.x0)))
+                        .attr("fill", "grey")
+                        .attr("stroke", "black");
+
+            // pie charts
+            let secondFemalePassengers = passengers.filter(p=>p.sex=="female" && p.pclass==2);
+            let secondMalePassengers = passengers.filter(p=>p.sex=="male" && p.pclass==2);
+            const secondMalePie = pie(secondMalePassengers);
+            const secondFemalePie = pie(secondFemalePassengers);
+
+            let secondMalePieArea = tabAll.append("g")
+                                    .attr("class", "male-pie")
+                                    .attr('transform', `translate(${700}, ${125})`)
+                                    .attr("visibility", "hidden");
+
+            secondMalePieArea.selectAll('path').data(secondMalePie)
+                .join('path')
+                .attr('d', d3.arc()
+                    .innerRadius(0)
+                    .outerRadius(75)
+                )
+                .attr('stroke', p=> {
+                                if(p.data.survived == 0){
+                                    return "grey";
+                                } else {
+                                    return "steelblue";
+                                }})
+                .attr("stroke-width", 4);
+
+            let secondFemalePieArea = tabAll.append("g")
+                                    .attr("class", "female-pie")
+                                    .attr('transform', `translate(${700}, ${325})`)
+                                    .attr("visibility", "hidden");
+
+            secondFemalePieArea.selectAll('path').data(secondFemalePie)
+                .join('path')
+                .attr('d', d3.arc()
+                    .innerRadius(0)
+                    .outerRadius(75)
+                )
+                .attr('stroke', p=> {
+                                if(p.data.survived == 0){
+                                    return "grey";
+                                } else {
+                                    return "steelblue";
+                                }})
+                .attr("stroke-width", 5);
+
             // interactivity
 
             let allButton = d3.select("#all-b");
@@ -584,6 +667,12 @@
                 firstDeadBars.attr("visibility", "hidden");
                 firstMalePieArea.attr("visibility", "hidden");
                 firstFemalePieArea.attr("visibility", "hidden");
+
+                // second
+                secondAliveBars.attr("visibility", "hidden");
+                secondDeadBars.attr("visibility", "hidden");
+                secondMalePieArea.attr("visibility", "hidden");
+                secondFemalePieArea.attr("visibility", "hidden");
             })
 
             firstButton.on("click", function(){
@@ -599,20 +688,33 @@
                 firstDeadBars.attr("visibility", "visible");
                 firstMalePieArea.attr("visibility", "visible");
                 firstFemalePieArea.attr("visibility", "visible");
+
+                // second
+                secondAliveBars.attr("visibility", "hidden");
+                secondDeadBars.attr("visibility", "hidden");
+                secondMalePieArea.attr("visibility", "hidden");
+                secondFemalePieArea.attr("visibility", "hidden");
             })
 
             secondButton.on("click", function(){
                 // all
                 allAliveBars.attr("visibility", "hidden");
                 allDeadBars.attr("visibility", "hidden");
-                // malePieArea.attr("visibility", "hidden");
-                // femalePieArea.attr("visibility", "hidden");
+                malePieArea.attr("visibility", "hidden");
+                femalePieArea.attr("visibility", "hidden");
 
                 // first
-                // firstAliveBars.attr("visibility", "hidden");
-                // firstDeadBars.attr("visibility", "hidden");
-                // malePieArea.attr("visibility", "hidden");
-                // femalePieArea.attr("visibility", "hidden");
+                firstAliveBars.attr("visibility", "hidden");
+                firstDeadBars.attr("visibility", "hidden");
+                malePieArea.attr("visibility", "hidden");
+                femalePieArea.attr("visibility", "hidden");
+
+                // second
+                title.text("Second Class Passengers").attr("x", 220);
+                secondAliveBars.attr("visibility", "visible");
+                secondDeadBars.attr("visibility", "visible");
+                secondMalePieArea.attr("visibility", "visible");
+                secondFemalePieArea.attr("visibility", "visible");
             })
 
             thirdButton.on("click", function(){
@@ -623,10 +725,16 @@
                 femalePieArea.attr("visibility", "hidden");
 
                 // first
-                // firstAliveBars.attr("visibility", "hidden");
-                // firstDeadBars.attr("visibility", "hidden");
-                // malePieArea.attr("visibility", "hidden");
-                // femalePieArea.attr("visibility", "hidden");
+                firstAliveBars.attr("visibility", "hidden");
+                firstDeadBars.attr("visibility", "hidden");
+                firstMalePieArea.attr("visibility", "hidden");
+                firstFemalePieArea.attr("visibility", "hidden");
+
+                // second
+                secondAliveBars.attr("visibility", "hidden");
+                secondDeadBars.attr("visibility", "hidden");
+                secondMalePieArea.attr("visibility", "hidden");
+                secondFemalePieArea.attr("visibility", "hidden");
             })
 
          };
