@@ -1,6 +1,6 @@
 pclass,survived,name,sex,age,sibsp,parch,ticket,raw_fare,fare,deck,cabin,embarked,boat,body,home.dest
 1,1,"Allen, Miss. Elisabeth Walton",female,29,0,0,24160,211.3375,211,B,B5,S,2,,"St Louis, MO"
-1,1,"Allison, Master. Hudson Trevor",male,0.92,1,2,113781,151.55,152,C,C22 C26,S,11,,"Montreal, PQ / Chesterville, ON"
+1,1,"Allison, Master. Hudson Trevor",male,0,1,2,113781,151.55,152,C,C22 C26,S,11,,"Montreal, PQ / Chesterville, ON"
 1,0,"Allison, Miss. Helen Loraine",female,2,1,2,113781,151.55,152,C,C22 C26,S,,,"Montreal, PQ / Chesterville, ON"
 1,0,"Allison, Mr. Hudson Joshua Creighton",male,30,1,2,113781,151.55,152,C,C22 C26,S,,135,"Montreal, PQ / Chesterville, ON"
 1,0,"Allison, Mrs. Hudson J C (Bessie Waldo Daniels)",female,25,1,2,113781,151.55,152,C,C22 C26,S,,,"Montreal, PQ / Chesterville, ON"
@@ -358,7 +358,7 @@ pclass,survived,name,sex,age,sibsp,parch,ticket,raw_fare,fare,deck,cabin,embarke
 2,0,"Butler, Mr. Reginald Fenton",male,25,0,0,234686,13,13,,,S,,97,"Southsea, Hants"
 2,0,"Byles, Rev. Thomas Roussel Davids",male,42,0,0,244310,13,13,,,S,,,London
 2,1,"Bystrom, Mrs. (Karolina)",female,42,0,0,236852,13,13,,,S,,,"New York, NY"
-2,1,"Caldwell, Master. Alden Gates",male,0.83,0,2,248738,29,29,,,S,13,,"Bangkok, Thailand / Roseville, IL"
+2,1,"Caldwell, Master. Alden Gates",male,0,0,2,248738,29,29,,,S,13,,"Bangkok, Thailand / Roseville, IL"
 2,1,"Caldwell, Mr. Albert Francis",male,26,1,1,248738,29,29,,,S,13,,"Bangkok, Thailand / Roseville, IL"
 2,1,"Caldwell, Mrs. Albert Francis (Sylvia Mae Harbaugh)",female,22,1,1,248738,29,29,,,S,13,,"Bangkok, Thailand / Roseville, IL"
 2,1,"Cameron, Miss. Clear Annie",female,35,0,0,F.C.C. 13528,21,21,,,S,14,,"Mamaroneck, NY"
@@ -426,7 +426,7 @@ pclass,survived,name,sex,age,sibsp,parch,ticket,raw_fare,fare,deck,cabin,embarke
 2,0,"Givard, Mr. Hans Kristensen",male,30,0,0,250646,13,13,,,S,,305,
 2,0,"Greenberg, Mr. Samuel",male,52,0,0,250647,13,13,,,S,,19,"Bronx, NY"
 2,0,"Hale, Mr. Reginald",male,30,0,0,250653,13,13,,,S,,75,"Auburn, NY"
-2,1,"Hamalainen, Master. Viljo",male,0.67,1,1,250649,14.5,15,,,S,4,,"Detroit, MI"
+2,1,"Hamalainen, Master. Viljo",male,0,1,1,250649,14.5,15,,,S,4,,"Detroit, MI"
 2,1,"Hamalainen, Mrs. William (Anna)",female,24,0,2,250649,14.5,15,,,S,4,,"Detroit, MI"
 2,0,"Harbeck, Mr. William H",male,44,0,0,248746,13,13,,,S,,35,"Seattle, WA / Toledo, OH"
 2,1,"Harper, Miss. Annie Jessie ""Nina""",female,6,0,1,248727,33,33,,,S,11,,"Denmark Hill, Surrey / Chicago"
@@ -547,7 +547,7 @@ pclass,survived,name,sex,age,sibsp,parch,ticket,raw_fare,fare,deck,cabin,embarke
 2,1,"Renouf, Mrs. Peter Henry (Lillian Jefferys)",female,30,3,0,31027,21,21,,,S,,,"Elizabeth, NJ"
 2,1,"Reynaldo, Ms. Encarnacion",female,28,0,0,230434,13,13,,,S,9,,Spain
 2,0,"Richard, Mr. Emile",male,23,0,0,SC/PARIS 2133,15.0458,15,,,C,,,"Paris / Montreal, PQ"
-2,1,"Richards, Master. George Sibley",male,0.83,1,1,29106,18.75,19,,,S,4,,"Cornwall / Akron, OH"
+2,1,"Richards, Master. George Sibley",male,0,1,1,29106,18.75,19,,,S,4,,"Cornwall / Akron, OH"
 2,1,"Richards, Master. William Rowe",male,3,1,1,29106,18.75,19,,,S,4,,"Cornwall / Akron, OH"
 2,1,"Richards, Mrs. Sidney (Emily Hocking)",female,24,2,3,29106,18.75,19,,,S,4,,"Cornwall / Akron, OH"
 2,1,"Ridsdale, Miss. Lucy",female,50,0,0,W./C. 14258,10.5,11,,,S,13,,"London, England / Marietta, Ohio and Milwaukee, WI"
@@ -589,7 +589,7 @@ pclass,survived,name,sex,age,sibsp,parch,ticket,raw_fare,fare,deck,cabin,embarke
 2,1,"Wells, Master. Ralph Lester",male,2,1,1,29103,23,23,,,S,14,,"Cornwall / Akron, OH"
 2,1,"Wells, Miss. Joan",female,4,1,1,29103,23,23,,,S,14,,"Cornwall / Akron, OH"
 2,1,"Wells, Mrs. Arthur Henry (""Addie"" Dart Trevaskis)",female,29,0,2,29103,23,23,,,S,14,,"Cornwall / Akron, OH"
-2,1,"West, Miss. Barbara J",female,0.92,1,2,C.A. 34651,27.75,28,,,S,10,,"Bournmouth, England"
+2,1,"West, Miss. Barbara J",female,0,1,2,C.A. 34651,27.75,28,,,S,10,,"Bournmouth, England"
 2,1,"West, Miss. Constance Mirium",female,5,1,2,C.A. 34651,27.75,28,,,S,10,,"Bournmouth, England"
 2,0,"West, Mr. Edwy Arthur",male,36,1,2,C.A. 34651,27.75,28,,,S,,,"Bournmouth, England"
 2,1,"West, Mrs. Edwy Arthur (Ada Mary Worth)",female,33,1,2,C.A. 34651,27.75,28,,,S,10,,"Bournmouth, England"
@@ -610,7 +610,7 @@ pclass,survived,name,sex,age,sibsp,parch,ticket,raw_fare,fare,deck,cabin,embarke
 3,0,"Adahl, Mr. Mauritz Nils Martin",male,30,0,0,C 7076,7.25,7,,,S,,72,"Asarum, Sweden Brooklyn, NY"
 3,0,"Adams, Mr. John",male,26,0,0,341826,8.05,8,,,S,,103,"Bournemouth, England"
 3,0,"Ahlin, Mrs. Johan (Johanna Persdotter Larsson)",female,40,1,0,7546,9.475,9,,,S,,,"Sweden Akeley, MN"
-3,1,"Aks, Master. Philip Frank",male,0.83,0,1,392091,9.35,9,,,S,11,,"London, England Norfolk, VA"
+3,1,"Aks, Master. Philip Frank",male,0,0,1,392091,9.35,9,,,S,11,,"London, England Norfolk, VA"
 3,1,"Aks, Mrs. Sam (Leah Rosen)",female,18,0,1,392091,9.35,9,,,S,13,,"London, England Norfolk, VA"
 3,1,"Albimona, Mr. Nassef Cassem",male,26,0,0,2699,18.7875,19,,,C,15,,"Syria Fredericksburg, VA"
 3,0,"Alexander, Mr. William",male,26,0,0,3474,7.8875,8,,,S,,,"England Albion, NY"
@@ -656,8 +656,8 @@ pclass,survived,name,sex,age,sibsp,parch,ticket,raw_fare,fare,deck,cabin,embarke
 3,0,"Baccos, Mr. Raffull",male,20,0,0,2679,7.225,7,,,C,,,
 3,0,"Backstrom, Mr. Karl Alfred",male,32,1,0,3101278,15.85,16,,,S,D,,"Ruotsinphytaa, Finland New York, NY"
 3,1,"Backstrom, Mrs. Karl Alfred (Maria Mathilda Gustafsson)",female,33,3,0,3101278,15.85,16,,,S,,,"Ruotsinphytaa, Finland New York, NY"
-3,1,"Baclini, Miss. Eugenie",female,0.75,2,1,2666,19.2583,19,,,C,C,,"Syria New York, NY"
-3,1,"Baclini, Miss. Helene Barbara",female,0.75,2,1,2666,19.2583,19,,,C,C,,"Syria New York, NY"
+3,1,"Baclini, Miss. Eugenie",female,0,2,1,2666,19.2583,19,,,C,C,,"Syria New York, NY"
+3,1,"Baclini, Miss. Helene Barbara",female,0,2,1,2666,19.2583,19,,,C,C,,"Syria New York, NY"
 3,1,"Baclini, Miss. Marie Catherine",female,5,2,1,2666,19.2583,19,,,C,C,,"Syria New York, NY"
 3,1,"Baclini, Mrs. Solomon (Latifa Qurban)",female,24,0,3,2666,19.2583,19,,,C,C,,"Syria New York, NY"
 3,1,"Badman, Miss. Emily Louisa",female,18,0,0,A/4 31416,8.05,8,,,S,C,,"London Skanteales, NY"
@@ -746,7 +746,7 @@ pclass,survived,name,sex,age,sibsp,parch,ticket,raw_fare,fare,deck,cabin,embarke
 3,0,"Dakic, Mr. Branko",male,19,0,0,349228,10.1708,10,,,S,,,Austria
 3,1,"Daly, Miss. Margaret Marcella ""Maggie""",female,30,0,0,382650,6.95,7,,,Q,15,,"Co Athlone, Ireland New York, NY"
 3,1,"Daly, Mr. Eugene Patrick",male,29,0,0,382651,7.75,8,,,Q,13 15 B,,"Co Athlone, Ireland New York, NY"
-3,0,"Danbom, Master. Gilbert Sigvard Emanuel",male,0.33,0,2,347080,14.4,14,,,S,,,"Stanton, IA"
+3,0,"Danbom, Master. Gilbert Sigvard Emanuel",male,0,0,2,347080,14.4,14,,,S,,,"Stanton, IA"
 3,0,"Danbom, Mr. Ernst Gilbert",male,34,1,1,347080,14.4,14,,,S,,197,"Stanton, IA"
 3,0,"Danbom, Mrs. Ernst Gilbert (Anna Sigrid Maria Brogren)",female,28,1,1,347080,14.4,14,,,S,,,"Stanton, IA"
 3,0,"Danoff, Mr. Yoto",male,27,0,0,349219,7.8958,8,,,S,,,"Bulgaria Chicago, IL"
@@ -762,7 +762,7 @@ pclass,survived,name,sex,age,sibsp,parch,ticket,raw_fare,fare,deck,cabin,embarke
 3,1,"de Mulder, Mr. Theodore",male,30,0,0,345774,9.5,10,,,S,11,,"Belgium Detroit, MI"
 3,0,"de Pelsmaeker, Mr. Alfons",male,16,0,0,345778,9.5,10,,,S,,,
 3,1,"Dean, Master. Bertram Vere",male,1,1,2,C.A. 2315,20.575,21,,,S,10,,"Devon, England Wichita, KS"
-3,1,"Dean, Miss. Elizabeth Gladys ""Millvina""",female,0.17,1,2,C.A. 2315,20.575,21,,,S,10,,"Devon, England Wichita, KS"
+3,1,"Dean, Miss. Elizabeth Gladys ""Millvina""",female,0,1,2,C.A. 2315,20.575,21,,,S,10,,"Devon, England Wichita, KS"
 3,0,"Dean, Mr. Bertram Frank",male,26,1,2,C.A. 2315,20.575,21,,,S,,,"Devon, England Wichita, KS"
 3,1,"Dean, Mrs. Bertram (Eva Georgetta Light)",female,33,1,2,C.A. 2315,20.575,21,,,S,10,,"Devon, England Wichita, KS"
 3,0,"Delalic, Mr. Redjo",male,25,0,0,349250,7.8958,8,,,S,,,
@@ -1110,7 +1110,7 @@ pclass,survived,name,sex,age,sibsp,parch,ticket,raw_fare,fare,deck,cabin,embarke
 3,0,"Patchett, Mr. George",male,19,0,0,358585,14.5,15,,,S,,,
 3,0,"Paulner, Mr. Uscher",male,,0,0,3411,8.7125,9,,,C,,,
 3,0,"Pavlovic, Mr. Stefo",male,32,0,0,349242,7.8958,8,,,S,,,
-3,0,"Peacock, Master. Alfred Edward",male,0.75,1,1,SOTON/O.Q. 3101315,13.775,14,,,S,,,
+3,0,"Peacock, Master. Alfred Edward",male,0,1,1,SOTON/O.Q. 3101315,13.775,14,,,S,,,
 3,0,"Peacock, Miss. Treasteall",female,3,1,1,SOTON/O.Q. 3101315,13.775,14,,,S,,,
 3,0,"Peacock, Mrs. Benjamin (Edith Nile)",female,26,0,2,SOTON/O.Q. 3101315,13.775,14,,,S,,,
 3,0,"Pearce, Mr. Ernest",male,,0,0,343271,7,7,,,S,,,
@@ -1239,7 +1239,7 @@ pclass,survived,name,sex,age,sibsp,parch,ticket,raw_fare,fare,deck,cabin,embarke
 3,0,"Svensson, Mr. Olof",male,24,0,0,350035,7.7958,8,,,S,,,
 3,1,"Tenglin, Mr. Gunnar Isidor",male,25,0,0,350033,7.7958,8,,,S,13 15,,
 3,0,"Theobald, Mr. Thomas Leonard",male,34,0,0,363294,8.05,8,,,S,,176,
-3,1,"Thomas, Master. Assad Alexander",male,0.42,0,1,2625,8.5167,9,,,C,16,,
+3,1,"Thomas, Master. Assad Alexander",male,0,0,1,2625,8.5167,9,,,C,16,,
 3,0,"Thomas, Mr. Charles P",male,,1,0,2621,6.4375,6,,,C,,,
 3,0,"Thomas, Mr. John",male,,0,0,2681,6.4375,6,,,C,,,
 3,0,"Thomas, Mr. Tannous",male,,0,0,2684,7.225,7,,,C,,,

@@ -106,7 +106,7 @@
 
 
          let requestData = async function(){
-            let passengers = await d3.csv("titanic-passenger-list.csv", d3.autoType);
+            let passengers = await d3.csv("titanic-passenger-list.csv", d3.autoType); 
             passengers = passengers.filter(p=> p.age != null && p.raw_fare != null);
             passengers = passengers.slice().sort((a,b) => d3.ascending(a.fare, b.fare));
             console.log(passengers);
