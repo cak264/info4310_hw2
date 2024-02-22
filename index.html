@@ -93,6 +93,37 @@
               stroke: none;
             }
 
+            #panel {
+                height: 280px;
+                width: 280px;
+                position: absolute;
+                left: 1000px;
+                top: 130px;
+                padding: 0 20 20 20;
+                margin-left: 50px;
+                border: 3px solid black;
+            }
+
+            .panel {
+                padding-left: 10px;
+                margin-bottom: 0px;
+            }
+
+            .bold {
+                font-weight: bold;
+            }
+
+            td {
+                padding-left: 10px;
+                margin: 8px;
+            }
+
+            p {
+                font-style: italic;
+                margin-top: 5px;
+                padding-bottom: 10px;
+            }
+
 
         </style>
 
@@ -108,6 +139,7 @@
             <img src="titanic.jpg" alt="Titanic sinking ship" height="500" class="image">
             <svg id="mainsvg" height="600" width="900" class="top"></svg>
         </div>
+        <div id="panel"></div>
         <div class="tabs">
             <button id="all-b" type="button">All Classes</button>
             <button id="first-b" type="button">First Class</button>
@@ -328,7 +360,7 @@
                     this.parentNode.appendChild(this);
                   });
 
-              // updatePanel(d);
+                updatePanel(d);
 
             });
 
@@ -340,9 +372,45 @@
                 .attr("stroke-width", 1)
                 .attr('r',2);
 
-              // updatePanel( {} );
+              table.selectAll("tr").remove();
 
             });
+
+            let panelHeader = d3.select("#panel").append("h3").attr("class","panel").text("Passenger Information");
+            d3.select("#panel").append("p").attr("class","panel").text("Hover over a passenger to find out more about them");
+            let table = d3.select("#panel").append("table");
+
+            function updatePanel(row) {
+                let rowCopy = Object.assign({},row);
+
+                let keysToKeep = ['name', 'pclass', 'survived', 'sex', 'age', 'raw_fare'];
+                let keyMappings = {
+                    'pclass': 'Class',
+                    'survived': 'Survived',
+                    'name': 'Name',
+                    'sex': 'Sex',
+                    'age': 'Age',
+                    'raw_fare': 'Fare'
+                };
+
+                let kvPairs = keysToKeep
+                    .map(key => [keyMappings[key], rowCopy[key]])
+                    .filter(([key, value]) => value !== null);
+
+                console.log(kvPairs);
+
+                table.selectAll("tr").remove();
+
+                let rows = table.selectAll("tr").data(kvPairs)
+                    .enter()
+                    .append("tr");
+
+                rows.each(function(d) {
+                    d3.select(this).append("td").attr("class", "bold").text(d[0]);
+                    d3.select(this).append("td").text(d[1]);
+                });
+
+            }
 
             // make bins to hold passengers
 
