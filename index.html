@@ -80,6 +80,11 @@
                 padding: 5px;
             }
 
+            button:hover, button:focus{
+                background-color: #f0f0f0;
+                outline: 0.5px solid black;
+            }
+
             .gridlines line {
               stroke: #bbb;
             }
@@ -562,6 +567,8 @@
                               .text("Female Passengers")
                               .style("font-size", 15);
 
+
+
             const malePie = pie(malePassengers);
             const femalePie = pie(femalePassengers);
 
@@ -867,6 +874,38 @@
 
 
 
+
+            // count labels
+            let maleAliveCountLabel = tabAll.append("text")
+                                        .attr("x", 660)
+                                        .attr("y", 115)
+                                        .text(allAlive.filter(p=> p.sex == "male").length.toString())
+                                        .style("font-size", 15)
+                                        .style("font-weight", "bold");
+
+            let maleDeadCountLabel = tabAll.append("text")
+                                        .attr("x", 710)
+                                        .attr("y", 185)
+                                        .text(allDead.filter(p=> p.sex == "male").length.toString())
+                                        .style("font-size", 15)
+                                        .style("font-weight", "bold");
+
+            let femaleAliveCountLabel = tabAll.append("text")
+                                        .attr("x", 650)
+                                        .attr("y", 445)
+                                        .text(allAlive.filter(p=> p.sex == "female").length.toString())
+                                        .style("font-size", 15)
+                                        .style("font-weight", "bold");
+
+            let femaleDeadCountLabel = tabAll.append("text")
+                                        .attr("x", 720)
+                                        .attr("y", 395)
+                                        .text(allDead.filter(p=> p.sex == "female").length.toString())
+                                        .style("font-size", 15)
+                                        .style("font-weight", "bold");
+
+            console.log()
+
             // interactivity
 
             let allButton = d3.select("#all-b");
@@ -899,6 +938,16 @@
                 thirdDeadBars.attr("visibility", "hidden");
                 thirdMalePieArea.attr("visibility", "hidden");
                 thirdFemalePieArea.attr("visibility", "hidden");
+
+                // counts
+                maleAliveCountLabel.text(allAlive.filter(p=> p.sex == "male").length.toString())
+                                    .attr("x", 660)
+                                    .attr("y", 115);
+                maleDeadCountLabel.text(allDead.filter(p=> p.sex == "male").length.toString());
+                femaleAliveCountLabel.text(allAlive.filter(p=> p.sex == "female").length.toString());
+                femaleDeadCountLabel.text(allDead.filter(p=> p.sex == "female").length.toString())
+                                    .attr("x", 720)
+                                    .attr("y", 395);
             })
 
             firstButton.on("click", function(){
@@ -926,6 +975,16 @@
                 thirdDeadBars.attr("visibility", "hidden");
                 thirdMalePieArea.attr("visibility", "hidden");
                 thirdFemalePieArea.attr("visibility", "hidden");
+
+                // counts
+                maleAliveCountLabel.text(firstAlive.filter(p=> p.sex == "male").length.toString())
+                                    .attr("x", 660)
+                                    .attr("y", 115);
+                maleDeadCountLabel.text(firstDead.filter(p=> p.sex == "male").length.toString());
+                femaleAliveCountLabel.text(firstAlive.filter(p=> p.sex == "female").length.toString());
+                femaleDeadCountLabel.text(firstDead.filter(p=> p.sex == "female").length.toString())
+                                    .attr("x", 705)
+                                    .attr("y", 365);
             })
 
             secondButton.on("click", function(){
@@ -953,6 +1012,16 @@
                 thirdDeadBars.attr("visibility", "hidden");
                 thirdMalePieArea.attr("visibility", "hidden");
                 thirdFemalePieArea.attr("visibility", "hidden");
+
+                // counts
+                maleAliveCountLabel.text(secondAlive.filter(p=> p.sex == "male").length.toString())
+                                    .attr("x", 670)
+                                    .attr("y", 115);
+                maleDeadCountLabel.text(secondDead.filter(p=> p.sex == "male").length.toString());
+                femaleAliveCountLabel.text(secondAlive.filter(p=> p.sex == "female").length.toString());
+                femaleDeadCountLabel.text(secondDead.filter(p=> p.sex == "female").length.toString())
+                                    .attr("x", 715)
+                                    .attr("y", 375);
             })
 
             thirdButton.on("click", function(){
@@ -980,6 +1049,16 @@
                 thirdDeadBars.attr("visibility", "visible");
                 thirdMalePieArea.attr("visibility", "visible");
                 thirdFemalePieArea.attr("visibility", "visible");
+
+                // counts
+                maleAliveCountLabel.text(thirdAlive.filter(p=> p.sex == "male").length.toString())
+                                    .attr("x", 660)
+                                    .attr("y", 115);
+                maleDeadCountLabel.text(thirdDead.filter(p=> p.sex == "male").length.toString());
+                femaleAliveCountLabel.text(thirdAlive.filter(p=> p.sex == "female").length.toString());
+                femaleDeadCountLabel.text(thirdDead.filter(p=> p.sex == "female").length.toString())
+                                    .attr("x", 725)
+                                    .attr("y", 425);
             })
 
          };
