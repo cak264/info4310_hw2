@@ -564,8 +564,7 @@
                                 }})
                 .attr("stroke-width", 4);
 
-
-             // first class
+            // second class
 
             let tabSecond = tabArea.append("g")
                     .attr("class", "second");
@@ -647,6 +646,91 @@
                                 }})
                 .attr("stroke-width", 5);
 
+
+             // third class
+
+            let tabThird = tabArea.append("g")
+                    .attr("class", "second");
+            
+            let thirdChartArea=tabFirst.append("g")
+                            .attr("class", "chartArea")
+                            .attr('transform', `translate(${tabMargins.left}, ${tabMargins.top})`);
+
+            let thirdAlive = thirdList.filter(p=> p.survived == 1);
+            let thirdDead = thirdList.filter(p=> p.survived == 0);
+            
+            let thirdAliveBins = bin(thirdAlive);
+            let thirdDeadBins = bin(thirdDead);
+
+            let thirdDeadBars = thirdChartArea.append("g").attr("visibility", "hidden")
+                                              .attr('transform', `translate(${tabMargins.left}, ${tabMargins.top})`);
+            let thirdAliveBars = secondChartArea.append("g").attr("visibility", "hidden")
+                                                .attr('transform', `translate(${tabMargins.left}, ${tabMargins.top})`);
+
+            thirdAliveBars.selectAll("rect").data(thirdAliveBins)
+                        .join("rect")
+                        .attr("x", d=> allXScale(d.x0))
+                        .attr("y", d=> aliveYScale(d.length))
+                        .attr("height", d=> tabChartHeight/2-aliveYScale(d.length))
+                        .attr("width", d=>(allXScale(d.x0 + 5)) - (allXScale(d.x0)))
+                        .attr("fill", "steelblue")
+                        .attr("stroke", "black");
+
+            thirdDeadBars.selectAll("rect").data(thirdDeadBins)
+                        .join("rect")
+                        .attr("x", d=> allXScale(d.x0))
+                        .attr("y", d=> tabChartHeight/2)
+                        .attr("height", d=> deadYScale(d.length)-tabChartHeight/2)
+                        .attr("width", d=> (allXScale(d.x0 + 5)) - (allXScale(d.x0)))
+                        .attr("fill", "grey")
+                        .attr("stroke", "black");
+
+            // pie charts
+            let thirdFemalePassengers = passengers.filter(p=>p.sex=="female" && p.pclass==3);
+            let thirdMalePassengers = passengers.filter(p=>p.sex=="male" && p.pclass==3);
+            const thirdMalePie = pie(thirdMalePassengers);
+            const thirdFemalePie = pie(thirdFemalePassengers);
+
+            let thirdMalePieArea = tabAll.append("g")
+                                    .attr("class", "male-pie")
+                                    .attr('transform', `translate(${700}, ${125})`)
+                                    .attr("visibility", "hidden");
+
+            thirdMalePieArea.selectAll('path').data(thirdMalePie)
+                .join('path')
+                .attr('d', d3.arc()
+                    .innerRadius(0)
+                    .outerRadius(75)
+                )
+                .attr('stroke', p=> {
+                                if(p.data.survived == 0){
+                                    return "grey";
+                                } else {
+                                    return "steelblue";
+                                }})
+                .attr("stroke-width", 4);
+
+            let thirdFemalePieArea = tabAll.append("g")
+                                    .attr("class", "female-pie")
+                                    .attr('transform', `translate(${700}, ${325})`)
+                                    .attr("visibility", "hidden");
+
+            thirdFemalePieArea.selectAll('path').data(thirdFemalePie)
+                .join('path')
+                .attr('d', d3.arc()
+                    .innerRadius(0)
+                    .outerRadius(75)
+                )
+                .attr('stroke', p=> {
+                                if(p.data.survived == 0){
+                                    return "grey";
+                                } else {
+                                    return "steelblue";
+                                }})
+                .attr("stroke-width", 5);
+
+
+
             // interactivity
 
             let allButton = d3.select("#all-b");
@@ -673,6 +757,12 @@
                 secondDeadBars.attr("visibility", "hidden");
                 secondMalePieArea.attr("visibility", "hidden");
                 secondFemalePieArea.attr("visibility", "hidden");
+
+                // third
+                thirdAliveBars.attr("visibility", "hidden");
+                thirdDeadBars.attr("visibility", "hidden");
+                thirdMalePieArea.attr("visibility", "hidden");
+                thirdFemalePieArea.attr("visibility", "hidden");
             })
 
             firstButton.on("click", function(){
@@ -694,6 +784,12 @@
                 secondDeadBars.attr("visibility", "hidden");
                 secondMalePieArea.attr("visibility", "hidden");
                 secondFemalePieArea.attr("visibility", "hidden");
+
+                // third
+                thirdAliveBars.attr("visibility", "hidden");
+                thirdDeadBars.attr("visibility", "hidden");
+                thirdMalePieArea.attr("visibility", "hidden");
+                thirdFemalePieArea.attr("visibility", "hidden");
             })
 
             secondButton.on("click", function(){
@@ -715,6 +811,12 @@
                 secondDeadBars.attr("visibility", "visible");
                 secondMalePieArea.attr("visibility", "visible");
                 secondFemalePieArea.attr("visibility", "visible");
+
+                // third
+                thirdAliveBars.attr("visibility", "hidden");
+                thirdDeadBars.attr("visibility", "hidden");
+                thirdMalePieArea.attr("visibility", "hidden");
+                thirdFemalePieArea.attr("visibility", "hidden");
             })
 
             thirdButton.on("click", function(){
@@ -735,6 +837,12 @@
                 secondDeadBars.attr("visibility", "hidden");
                 secondMalePieArea.attr("visibility", "hidden");
                 secondFemalePieArea.attr("visibility", "hidden");
+
+                // third
+                thirdAliveBars.attr("visibility", "visible");
+                thirdDeadBars.attr("visibility", "visible");
+                thirdMalePieArea.attr("visibility", "visible");
+                thirdFemalePieArea.attr("visibility", "visible");
             })
 
          };
