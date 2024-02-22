@@ -24,6 +24,10 @@
               top: 30px;
             }
 
+            .firstX, .secondX, .thirdX {
+              pointer-events: none;
+            }
+
             #labels {
                 float: left;
             }
@@ -79,11 +83,11 @@
             .gridlines line {
               stroke: #bbb;
             }
-            
+
             .gridlines .domain {
               stroke: none;
             }
-          
+
 
         </style>
 
@@ -118,7 +122,7 @@
 
 
          let requestData = async function(){
-            let passengers = await d3.csv("titanic-passenger-list.csv", d3.autoType); 
+            let passengers = await d3.csv("titanic-passenger-list.csv", d3.autoType);
             passengers = passengers.filter(p=> p.age != null && p.raw_fare != null);
             passengers = passengers.slice().sort((a,b) => d3.ascending(a.fare, b.fare));
             console.log(passengers);
@@ -156,14 +160,6 @@
             console.log(firstList);
             console.log(secondList);
             console.log(thirdList);
-
-            // console.log(Object.keys(firstDict).length);
-            // console.log(Object.keys(secondDict).length);
-            // console.log(Object.keys(thirdDict).length);
-
-            // console.log(firstDict);
-            // console.log(secondDict);
-            // console.log(thirdDict);
 
 
             //first class points
@@ -207,7 +203,7 @@
                 .attr("text-anchor", "middle")
                 .attr("dominant-baseline", "middle")
                 .text("x")
-                .attr("font-size", 10)
+                .attr("font-size", 8)
                 .attr("fill", "black");
 
 
@@ -306,13 +302,49 @@
             //slant left: .attr("cy", (d,i) => yScale3((i / NumCols3) - (i % ColSize3)))
             //slant right: .attr("cy", (d,i) => yScale3(i%ColSize3))
 
+            let allCircles = boat.selectAll("circle");
+
+            allCircles.on("mouseover", function(event, d) {
+
+                this.parentNode.appendChild(this);
+
+                d3.select(this)
+                    .transition().duration(100)
+                    .attr("stroke","black")
+                    .attr("stroke-width", function() {
+                        return d3.select(this).classed("first") ? 1.5 : 2;
+                    })
+                    .attr('r', function() {
+                        return d3.select(this).classed("first") ? 4 : 5;
+                    });
+
+                d3.selectAll('text')
+                  .each(function() {
+                    this.parentNode.appendChild(this);
+                  });
+
+              // updatePanel(d);
+
+            });
+
+            allCircles.on("mouseout", function(event, d) {
+
+              d3.select(this)
+                .transition().duration(200)
+                .attr("stroke","")
+                .attr("stroke-width", 1)
+                .attr('r',2);
+
+              // updatePanel( {} );
+
+            });
 
             // make bins to hold passengers
 
 
             // setting up tabs
             let tabArea = d3.select("#tabsvg");
-            
+
             let tabAll = tabArea.append("g")
                                 .attr("class", "all");
 
@@ -333,11 +365,11 @@
 
             let allAlive = passengers.filter(p=> p.survived == 1);
             let allDead = passengers.filter(p=> p.survived == 0);
-            
+
             let allAliveBins = bin(allAlive);
             let allDeadBins = bin(allDead);
 
-            // scales 
+            // scales
 
             let allXScale = d3.scaleLinear().domain([0, 85]).range([0,tabChartWidth]);
             let aliveYScale = d3.scaleLinear().domain([0, d3.max(allDeadBins, function(d){return d.length})]).range([tabChartHeight/2, 0]);
@@ -500,19 +532,19 @@
                                     return "steelblue";
                                 }})
                 .attr("stroke-width", 2);
-            
+
             // first class
 
             let tabFirst = tabArea.append("g")
                                 .attr("class", "first");
-            
+
             let firstChartArea=tabFirst.append("g")
                             .attr("class", "chartArea")
                             .attr('transform', `translate(${tabMargins.left}, ${tabMargins.top})`);
 
             let firstAlive = firstList.filter(p=> p.survived == 1);
             let firstDead = firstList.filter(p=> p.survived == 0);
-            
+
             let firstAliveBins = bin(firstAlive);
             let firstDeadBins = bin(firstDead);
 
@@ -592,14 +624,14 @@
 
             let tabSecond = tabArea.append("g")
                     .attr("class", "second");
-            
+
             let secondChartArea=tabFirst.append("g")
                             .attr("class", "chartArea")
                             .attr('transform', `translate(${tabMargins.left}, ${tabMargins.top})`);
 
             let secondAlive = secondList.filter(p=> p.survived == 1);
             let secondDead = secondList.filter(p=> p.survived == 0);
-            
+
             let secondAliveBins = bin(secondAlive);
             let secondDeadBins = bin(secondDead);
 
@@ -681,14 +713,14 @@
 
             let tabThird = tabArea.append("g")
                     .attr("class", "second");
-            
+
             let thirdChartArea=tabFirst.append("g")
                             .attr("class", "chartArea")
                             .attr('transform', `translate(${tabMargins.left}, ${tabMargins.top})`);
 
             let thirdAlive = thirdList.filter(p=> p.survived == 1);
             let thirdDead = thirdList.filter(p=> p.survived == 0);
-            
+
             let thirdAliveBins = bin(thirdAlive);
             let thirdDeadBins = bin(thirdDead);
 
@@ -885,5 +917,6 @@
          };
 
          requestData();
+
     </script>
 </html>
