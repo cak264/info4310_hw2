@@ -54,14 +54,26 @@
             }
 
             .tabs {
-                position: relative;
+                position: absolute;
                 width: 830px;
-                left: 150px;
+                left: 110px;
+                top: 520px;
+            }
+
+            #tabsvg {
+                position: absolute;
+                left: 100px;
+                top: 550px;
+                background-color: #f0f0f0;
+                border: 1px solid black;
+                border-radius: 10px;
             }
 
             button {
                 margin: 0px;
                 float: left;
+                font-size: 15px;
+                padding: 5px;
             }
 
             .gridlines line {
@@ -305,7 +317,7 @@
                                 .attr("class", "all");
 
             const tabWidth=500;
-            const tabHeight=400;
+            const tabHeight=500;
             const tabMargins={top: 20, right: 20, bottom: 20, left: 30};
             const tabChartWidth = tabWidth - tabMargins.left - tabMargins.right;
             const tabChartHeight = tabHeight - tabMargins.top - tabMargins.bottom;
@@ -381,12 +393,12 @@
 
             let xAxisTitle = tabAll.append("text")
                               .attr("x", 250)
-                              .attr("y", 450)
+                              .attr("y", 550)
                               .text("Passenger Age")
                               .style("font-size", 15);
 
             let yAlivetitle = tabAll.append("text")
-                              .attr("x", -100)
+                              .attr("x", -110)
                               .attr("y", 10)
                               .text("Survived")
                               .style('font-size', 15)
@@ -395,7 +407,7 @@
                               .style("alignment-baseline", "central");
 
             let yDeadtitle = tabAll.append("text")
-                              .attr("x", -275)
+                              .attr("x", -350)
                               .attr("y", 10)
                               .text("Deceased")
                               .style('font-size', 15)
@@ -410,16 +422,22 @@
 
             allAliveBars.selectAll("rect").data(allAliveBins)
                         .join("rect")
-                        .attr("x", d=> allXScale(d.x0))
+                        .attr("x", function(d){
+                            if (d.x0 % 5 !=0){return allXScale(d.x1-5)}
+                            else{return allXScale(d.x0)};
+                        })
                         .attr("y", d=> aliveYScale(d.length))
                         .attr("height", d=> tabChartHeight/2-aliveYScale(d.length))
-                        .attr("width", d=>(allXScale(d.x0 + 5)) - (allXScale(d.x0)))
+                        .attr("width", d=> (allXScale(d.x0 + 5)) - (allXScale(d.x0)))
                         .attr("fill", "steelblue")
                         .attr("stroke", "black");
 
             allDeadBars.selectAll("rect").data(allDeadBins)
                         .join("rect")
-                        .attr("x", d=> allXScale(d.x0))
+                        .attr("x", function(d){
+                            if (d.x0 % 5 !=0){return allXScale(d.x1-5)}
+                            else{return allXScale(d.x0)};
+                        })
                         .attr("y", d=> tabChartHeight/2)
                         .attr("height", d=> deadYScale(d.length)-tabChartHeight/2)
                         .attr("width", d=> (allXScale(d.x0 + 5)) - (allXScale(d.x0)))
@@ -440,7 +458,7 @@
                               .style("font-size", 15);
             let femalePieTitle = tabAll.append("text")
                               .attr("x", 525)
-                              .attr("y", 250)
+                              .attr("y", 340)
                               .text("Female Passengers")
                               .style("font-size", 15);
 
@@ -449,7 +467,7 @@
 
             let malePieArea = tabAll.append("g")
                                     .attr("class", "male-pie")
-                                    .attr('transform', `translate(${700}, ${125})`);
+                                    .attr('transform', `translate(${700}, ${150})`);
 
             malePieArea.selectAll('path').data(malePie)
                 .join('path')
@@ -467,7 +485,7 @@
 
             let femalePieArea = tabAll.append("g")
                                     .attr("class", "female-pie")
-                                    .attr('transform', `translate(${700}, ${325})`);
+                                    .attr('transform', `translate(${700}, ${425})`);
 
             femalePieArea.selectAll('path').data(femalePie)
                 .join('path')
@@ -505,7 +523,10 @@
 
             firstAliveBars.selectAll("rect").data(firstAliveBins)
                         .join("rect")
-                        .attr("x", d=> allXScale(d.x0))
+                        .attr("x", function(d){
+                            if (d.x0 % 5 !=0){return allXScale(d.x1-5)}
+                            else{return allXScale(d.x0)};
+                        })
                         .attr("y", d=> aliveYScale(d.length))
                         .attr("height", d=> tabChartHeight/2-aliveYScale(d.length))
                         .attr("width", d=>(allXScale(d.x0 + 5)) - (allXScale(d.x0)))
@@ -514,7 +535,10 @@
 
             firstDeadBars.selectAll("rect").data(firstDeadBins)
                         .join("rect")
-                        .attr("x", d=> allXScale(d.x0))
+                        .attr("x", function(d){
+                            if (d.x0 % 5 !=0){return allXScale(d.x1-5)}
+                            else{return allXScale(d.x0)};
+                        })
                         .attr("y", d=> tabChartHeight/2)
                         .attr("height", d=> deadYScale(d.length)-tabChartHeight/2)
                         .attr("width", d=> (allXScale(d.x0 + 5)) - (allXScale(d.x0)))
@@ -528,7 +552,7 @@
 
             let firstMalePieArea = tabAll.append("g")
                                     .attr("class", "male-pie")
-                                    .attr('transform', `translate(${700}, ${125})`)
+                                    .attr('transform', `translate(${700}, ${150})`)
                                     .attr("visibility", "hidden");
 
             firstMalePieArea.selectAll('path').data(firstMalePie)
@@ -547,7 +571,7 @@
 
             let firstFemalePieArea = tabAll.append("g")
                                     .attr("class", "female-pie")
-                                    .attr('transform', `translate(${700}, ${325})`)
+                                    .attr('transform', `translate(${700}, ${425})`)
                                     .attr("visibility", "hidden");
 
             firstFemalePieArea.selectAll('path').data(firstFemalePie)
@@ -586,7 +610,10 @@
 
             secondAliveBars.selectAll("rect").data(secondAliveBins)
                         .join("rect")
-                        .attr("x", d=> allXScale(d.x0))
+                        .attr("x", function(d){
+                            if (d.x0 % 5 !=0){return allXScale(d.x1-5)}
+                            else{return allXScale(d.x0)};
+                        })
                         .attr("y", d=> aliveYScale(d.length))
                         .attr("height", d=> tabChartHeight/2-aliveYScale(d.length))
                         .attr("width", d=>(allXScale(d.x0 + 5)) - (allXScale(d.x0)))
@@ -595,7 +622,10 @@
 
             secondDeadBars.selectAll("rect").data(secondDeadBins)
                         .join("rect")
-                        .attr("x", d=> allXScale(d.x0))
+                        .attr("x", function(d){
+                            if (d.x0 % 5 !=0){return allXScale(d.x1-5)}
+                            else{return allXScale(d.x0)};
+                        })
                         .attr("y", d=> tabChartHeight/2)
                         .attr("height", d=> deadYScale(d.length)-tabChartHeight/2)
                         .attr("width", d=> (allXScale(d.x0 + 5)) - (allXScale(d.x0)))
@@ -610,7 +640,7 @@
 
             let secondMalePieArea = tabAll.append("g")
                                     .attr("class", "male-pie")
-                                    .attr('transform', `translate(${700}, ${125})`)
+                                    .attr('transform', `translate(${700}, ${150})`)
                                     .attr("visibility", "hidden");
 
             secondMalePieArea.selectAll('path').data(secondMalePie)
@@ -629,7 +659,7 @@
 
             let secondFemalePieArea = tabAll.append("g")
                                     .attr("class", "female-pie")
-                                    .attr('transform', `translate(${700}, ${325})`)
+                                    .attr('transform', `translate(${700}, ${425})`)
                                     .attr("visibility", "hidden");
 
             secondFemalePieArea.selectAll('path').data(secondFemalePie)
@@ -669,7 +699,10 @@
 
             thirdAliveBars.selectAll("rect").data(thirdAliveBins)
                         .join("rect")
-                        .attr("x", d=> allXScale(d.x0))
+                        .attr("x", function(d){
+                            if (d.x0 % 5 !=0){return allXScale(d.x1-5)}
+                            else{return allXScale(d.x0)};
+                        })
                         .attr("y", d=> aliveYScale(d.length))
                         .attr("height", d=> tabChartHeight/2-aliveYScale(d.length))
                         .attr("width", d=>(allXScale(d.x0 + 5)) - (allXScale(d.x0)))
@@ -678,7 +711,10 @@
 
             thirdDeadBars.selectAll("rect").data(thirdDeadBins)
                         .join("rect")
-                        .attr("x", d=> allXScale(d.x0))
+                        .attr("x", function(d){
+                            if (d.x0 % 5 !=0){return allXScale(d.x1-5)}
+                            else{return allXScale(d.x0)};
+                        })
                         .attr("y", d=> tabChartHeight/2)
                         .attr("height", d=> deadYScale(d.length)-tabChartHeight/2)
                         .attr("width", d=> (allXScale(d.x0 + 5)) - (allXScale(d.x0)))
@@ -693,7 +729,7 @@
 
             let thirdMalePieArea = tabAll.append("g")
                                     .attr("class", "male-pie")
-                                    .attr('transform', `translate(${700}, ${125})`)
+                                    .attr('transform', `translate(${700}, ${150})`)
                                     .attr("visibility", "hidden");
 
             thirdMalePieArea.selectAll('path').data(thirdMalePie)
@@ -712,7 +748,7 @@
 
             let thirdFemalePieArea = tabAll.append("g")
                                     .attr("class", "female-pie")
-                                    .attr('transform', `translate(${700}, ${325})`)
+                                    .attr('transform', `translate(${700}, ${425})`)
                                     .attr("visibility", "hidden");
 
             thirdFemalePieArea.selectAll('path').data(thirdFemalePie)
@@ -839,6 +875,7 @@
                 secondFemalePieArea.attr("visibility", "hidden");
 
                 // third
+                title.text("Third Class Passengers").attr("x", 220);
                 thirdAliveBars.attr("visibility", "visible");
                 thirdDeadBars.attr("visibility", "visible");
                 thirdMalePieArea.attr("visibility", "visible");
