@@ -383,14 +383,14 @@
             function updatePanel(row) {
                 let rowCopy = Object.assign({},row);
 
-                let keysToKeep = ['name', 'pclass', 'survived', 'sex', 'age', 'raw_fare'];
+                let keysToKeep = ['name', 'pclass', 'survived', 'sex', 'age', 'fare'];
                 let keyMappings = {
                     'pclass': 'Class',
                     'survived': 'Survived',
                     'name': 'Name',
                     'sex': 'Sex',
                     'age': 'Age',
-                    'raw_fare': 'Fare'
+                    'fare': 'Fare'
                 };
 
                 let kvPairs = keysToKeep
@@ -412,7 +412,6 @@
 
             }
 
-            // make bins to hold passengers
 
 
             // setting up tabs
