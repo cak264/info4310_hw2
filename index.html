@@ -991,7 +991,42 @@
                 femaleDeadCountLabel.text(thirdDead.filter(p=> p.sex == "female").length.toString())
                                     .attr("x", 725)
                                     .attr("y", 425);
+
             })
+
+            // adding zooming
+
+            boatsvg.append("defs").append("clipPath")
+                      .attr("id","chartClip")
+                      .append("rect").attr("x",0)
+                                     .attr("y",0)
+                                     .attr("width",chartWidth)
+                                     .attr("height",chartHeight);
+
+            boat.attr("clip-path","url(#chartClip)");
+
+            // make an interactive "surface" at the top of the plot area
+            boatsvg.append("rect").attr("x",0).attr("y",0)
+                                .attr("width",chartWidth).attr("height",chartHeight)
+                                .attr("fill","none")
+                                .style("pointer-events","all");
+                                    
+            // 1. build a pan-zoom handler
+            let zoomExtent = [[0,0],[chartWidth,chartHeight]];
+            let translateExtent = [[-100, -100],[chartWidth+100,chartHeight+100]];
+            var plotZoom = d3.zoom()
+                            .extent(zoomExtent)
+                            .translateExtent(translateExtent)
+                            .scaleExtent([1,10])
+                            .on("zoom", plotZoomed);                   
+                                
+            // then add the zoom handler
+            boatsvg.call(plotZoom);
+
+            function plotZoomed( { transform } ) {
+                console.log(transform);
+                boatsvg.attr("transform", transform);
+            };
 
          };
 
