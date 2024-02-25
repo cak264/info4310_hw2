@@ -118,6 +118,10 @@
                 font-weight: normal;
             }
 
+            p.panel{
+                font-size: 18px;
+            }
+
             .bold, h3.panel {
                 font-weight: bold;
             }
@@ -310,7 +314,7 @@
                 .attr("class", "second")
                 .attr("cx", (d,i) => xScale2(i/NumCols2))
                 .attr("cy", (d,i) => yScale2(i%ColSize2))
-                .attr("r", 2)
+                .attr("r", 2.5)
                 .style("fill", d => {return d.sex === "male" ? "lightblue" : "pink";});
 
 
@@ -356,7 +360,7 @@
                 .attr("class", "third")
                 .attr("cx", (d,i) => xScale3(i/NumCols3))
                 .attr("cy", (d,i) => yScale3(i%ColSize3))
-                .attr("r", 2)
+                .attr("r", 3)
                 .style("fill", d => {return d.sex === "male" ? "lightblue" : "pink";});
 
 
