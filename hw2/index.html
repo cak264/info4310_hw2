@@ -264,7 +264,7 @@
                 .attr("height", Height1)
                 .attr("fill", "none");
 
-            firstG.selectAll("circle").data(firstList)
+            let firstCircles = firstG.selectAll("circle").data(firstList)
                 .join("circle")
                 .attr("class", "first")
                 .attr("cx", (d,i) => xScale1(i/NumCols1))
@@ -309,7 +309,7 @@
                 .attr("height", Height2)
                 .attr("fill", "none");
 
-            secondG.selectAll("circle").data(secondList)
+            let secondCircles = secondG.selectAll("circle").data(secondList)
                 .join("circle")
                 .attr("class", "second")
                 .attr("cx", (d,i) => xScale2(i/NumCols2))
@@ -355,7 +355,7 @@
                 .attr("transform", "rotate(1)")
                 .attr("fill", "white");
 
-            thirdG.selectAll("circle").data(thirdList)
+            let thirdCircles = thirdG.selectAll("circle").data(thirdList)
                 .join("circle")
                 .attr("class", "third")
                 .attr("cx", (d,i) => xScale3(i/NumCols3))
@@ -385,6 +385,7 @@
 
             let allCircles = boat.selectAll("circle");
 
+
             allCircles.on("mouseover", function(event, d) {
 
                 this.parentNode.appendChild(this);
@@ -408,7 +409,7 @@
 
             });
 
-            allCircles.on("mouseout", function(event, d) {
+            firstCircles.on("mouseout", function(event, d) {
 
               d3.select(this)
                 .transition().duration(200)
@@ -417,6 +418,30 @@
                 .attr('r',2);
 
               table.selectAll("tr").remove();
+
+            });
+
+            secondCircles.on("mouseout", function(event, d) {
+
+                d3.select(this)
+                .transition().duration(200)
+                .attr("stroke","")
+                .attr("stroke-width", 1)
+                .attr('r',2.5);
+
+                table.selectAll("tr").remove();
+
+            });
+
+            thirdCircles.on("mouseout", function(event, d) {
+
+                d3.select(this)
+                .transition().duration(200)
+                .attr("stroke","")
+                .attr("stroke-width", 1)
+                .attr('r',3);
+
+                table.selectAll("tr").remove();
 
             });
 
