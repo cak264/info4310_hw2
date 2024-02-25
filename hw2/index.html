@@ -17,6 +17,11 @@
               left: 0;
             }
 
+            .between {
+                position: absolute;
+                top: 450;
+            }
+
             .container {
               position: relative;
               width: 830px;
@@ -35,19 +40,19 @@
             #first {
                 position: absolute;
                 top: 295px;
-                left: 50px;
+                left: 33px;
             }
 
             #second {
                 position: absolute;
                 top: 330px;
-                left: 34px;
+                left: 33px;
             }
 
             #third {
                 position: absolute;
                 top: 380px;
-                left: 43px;
+                left: 33px;
             }
 
             .firstX, .secondX, .thirdX {
@@ -65,13 +70,13 @@
                 position: absolute;
                 width: 830px;
                 left: 110px;
-                top: 520px;
+                top: 550px;
             }
 
             #tabsvg {
                 position: absolute;
                 left: 100px;
-                top: 550px;
+                top: 580px;
                 background-color: #f0f0f0;
                 border: 1px solid black;
                 border-radius: 10px;
@@ -102,18 +107,18 @@
                 width: 280px;
                 position: absolute;
                 left: 1000px;
-                top: 130px;
+                top: 120px;
                 padding: 0 20 20 20;
                 margin-left: 50px;
                 border: 3px solid black;
             }
 
             .panel {
-                padding-left: 10px;
                 margin-bottom: 0px;
+                font-weight: normal;
             }
 
-            .bold {
+            .bold, h3.panel {
                 font-weight: bold;
             }
 
@@ -128,11 +133,25 @@
                 padding-bottom: 10px;
             }
 
+            table {
+                margin-left:-10px;
+            }
+
+            #legend {
+                height: 130px;
+                width: 140px;
+                position: absolute;
+                left: 30px;
+                top: 130px;
+                border: 3px solid black;
+                z-index: 1;
+            }
 
         </style>
 
     </head>
     <body>
+        <svg id='legend'></svg>
         <div id="labels">
             <h4 id="first">First Class</h4>
             <h4 id="second">Second Class</h4>
@@ -151,6 +170,23 @@
             <button id="third-b" type="button">Third Class</button>
         </div>
         <svg id="tabsvg" height="600" width="1000"></svg>
+
+
+        <svg class="between" width="1200" height="80">
+
+          <line x1="120" y1="40" x2="1000" y2="40" stroke="black" stroke-width="2"/>
+
+          <line x1="120" y1="40" x2="150" y2="20" stroke="black" stroke-width="2"/>
+          <line x1="120" y1="40" x2="150" y2="60" stroke="black" stroke-width="2"/>
+
+          <line x1="1000" y1="40" x2="970" y2="20" stroke="black" stroke-width="2"/>
+          <line x1="1000" y1="40" x2="970" y2="60" stroke="black" stroke-width="2"/>
+
+          <text x="105" y="70" font-size="14" fill="black" text-anchor="end">Lower Fares</text>
+          <text x="1000" y="70" font-size="14" fill="black" text-anchor="start">Higher Fares</text>
+        </svg>
+
+
     </body>
     <script>
         const boatsvg = d3.select("svg#mainsvg");
@@ -381,8 +417,8 @@
             });
 
             let panelHeader = d3.select("#panel").append("h3").attr("class","panel").text("Passenger Information");
-            d3.select("#panel").append("p").attr("class","panel").text("Hover over a passenger to find out more about them");
-            let table = d3.select("#panel").append("table");
+            panelHeader.append("p").attr("class","panel").text("Hover over a passenger to learn more about them");
+            let table = panelHeader.append("table");
 
             function updatePanel(row) {
                 let rowCopy = Object.assign({},row);
@@ -398,7 +434,16 @@
                 };
 
                 let kvPairs = keysToKeep
-                    .map(key => [keyMappings[key], rowCopy[key]])
+                    .map(key => {
+                        let value = rowCopy[key];
+                        if (key === 'pclass') {
+                            value = convertPclass(value);
+                        }
+                        else if (key === 'survived'){
+                            value = convertSurvived(value);
+                        }
+                        return [keyMappings[key], value];
+                    })
                     .filter(([key, value]) => value !== null);
 
                 console.log(kvPairs);
@@ -415,6 +460,62 @@
                 });
 
             }
+
+            function convertPclass(value) {
+                if (value === 1) {
+                    return 'First';
+                } else if (value === 2) {
+                    return 'Second';
+                } else if (value === 3) {
+                    return 'Third';
+                }
+            }
+
+            function convertSurvived(value) {
+                if (value === 1) {
+                    return 'Yes';
+                } else {
+                    return 'No';
+                }
+            }
+
+            let legend = d3.select("#legend");
+            legend.append("circle")
+                .attr("cx", 35)
+                .attr("cy", 50)
+                .attr("r", 8)
+                .attr("fill", "pink")
+            legend.append("circle")
+                .attr("cx", 35)
+                .attr("cy", 75)
+                .attr("r", 8)
+                .attr("fill", "lightblue")
+            legend.append("text")
+                .attr("x", 42)
+                .attr("y", 25)
+                .attr("font-size", 18)
+                .attr("font-weight", "bold")
+                .text("Legend")
+            legend.append("text")
+                .attr("x", 65)
+                .attr("y", 55)
+                .attr("font-size", 16)
+                .text("Female")
+            legend.append("text")
+                .attr("x", 65)
+                .attr("y", 80)
+                .attr("font-size", 16)
+                .text("Male")
+            legend.append("text")
+                .attr("x", 28)
+                .attr("y", 108)
+                .attr("font-size", 18)
+                .text("X")
+            legend.append("text")
+                .attr("x", 65)
+                .attr("y", 107)
+                .attr("font-size", 16)
+                .text("Died")
 
 
 
@@ -1081,7 +1182,7 @@
             //                     .attr("width",chartWidth).attr("height",chartHeight)
             //                     .attr("fill","none")
             //                     .style("pointer-events","all");
-                                    
+
             // // 1. build a pan-zoom handler
             // let zoomExtent = [[0,0],[chartWidth,chartHeight]];
             // let translateExtent = [[-100, -100],[chartWidth+100,chartHeight+100]];
@@ -1089,8 +1190,8 @@
             //                 .extent(zoomExtent)
             //                 .translateExtent(translateExtent)
             //                 .scaleExtent([1,10])
-            //                 .on("zoom", plotZoomed);                   
-                                
+            //                 .on("zoom", plotZoomed);
+
             // // then add the zoom handler
             // boatsvg.call(plotZoom);
 
